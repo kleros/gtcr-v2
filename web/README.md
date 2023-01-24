@@ -1,3 +1,3 @@
-# @kleros/kleros-v2-web
+# @kleros/curate-web
 
 🚧 ⚖️ 🚧
