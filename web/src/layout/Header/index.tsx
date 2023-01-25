@@ -1,11 +1,10 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import HamburgerIcon from "svgs/header/hamburger.svg";
 import KlerosCourtLogo from "svgs/header/kleros-court.svg";
-import { useFocusOutside } from "hooks/useFocusOutside";
-import LightButton from "components/LightButton";
 import NavBar from "./navbar";
+import ConnectButton from "../../components/ConnectButton";
+import Menu from "./navbar/Menu";
 
 const Container = styled.div`
   position: sticky;
@@ -23,33 +22,22 @@ const Container = styled.div`
   .kleros-court-link {
     min-height: 48px;
   }
-`;
 
-const StyledLightButton = styled(LightButton)`
-  padding-right: 0;
-
-  .button-svg {
-    fill: white;
+  .menu {
+    display: flex;
   }
 `;
 
 const Header: React.FC = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const toggleIsOpen = () => setIsOpen(!isOpen);
-  const containerRef = useRef(null);
-  useFocusOutside(containerRef, () => setIsOpen(false));
   return (
     <Container>
       <Link className="kleros-court-link" to={"/"}>
         <KlerosCourtLogo />
       </Link>
-      <div ref={containerRef}>
-        <NavBar {...{ isOpen }} />
-        <StyledLightButton
-          text=""
-          Icon={HamburgerIcon}
-          onClick={toggleIsOpen}
-        />
+      <NavBar />
+      <div className="menu">
+        <ConnectButton />
+        <Menu />
       </div>
     </Container>
   );

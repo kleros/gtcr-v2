@@ -8,11 +8,14 @@ import LightModeIcon from "svgs/menu-icons/light-mode.svg";
 import HelpIcon from "svgs/menu-icons/help.svg";
 import SettingsIcon from "svgs/menu-icons/settings.svg";
 
-const Container = styled.div``;
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  padding-left: 1rem;
+`;
 
 const ButtonContainer = styled.div`
   min-height: 32px;
-
   display: flex;
   align-items: center;
 `;
@@ -21,11 +24,12 @@ const Menu: React.FC = () => {
   const [theme, toggleTheme] = useToggleTheme();
   const isLightTheme = theme === "light";
   const buttons = [
-    { text: "Notifications", Icon: NotificationsIcon },
-    { text: "Settings", Icon: SettingsIcon },
-    { text: "Help", Icon: HelpIcon },
+    { text: "", key: "Notification", Icon: NotificationsIcon },
+    { text: "", key: "Settings", Icon: SettingsIcon },
+    { text: "", key: "Help", Icon: HelpIcon },
     {
-      text: `${isLightTheme ? "Dark" : "Light"} Mode`,
+      text: "",
+      key: "Theme",
       Icon: isLightTheme ? DarkModeIcon : LightModeIcon,
       onClick: () => toggleTheme(),
     },
@@ -33,8 +37,8 @@ const Menu: React.FC = () => {
 
   return (
     <Container>
-      {buttons.map(({ text, Icon, onClick }) => (
-        <ButtonContainer key={text}>
+      {buttons.map(({ text, key, Icon, onClick }) => (
+        <ButtonContainer key={key}>
           <LightButton {...{ text, onClick, Icon }} />
         </ButtonContainer>
       ))}
