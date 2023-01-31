@@ -8,19 +8,20 @@ const Container = styled.div`
   width: 100%;
   background-color: ${({ theme }) => theme.primaryPurple};
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 16px;
 
   .secured-by-kleros {
     min-height: 24px;
+    margin-left: 48px;
   }
 
   .socialmedia {
     display: flex;
     gap: 16px;
     justify-content: center;
+    margin-right: 48px;
 
     a {
       display: inline-block;

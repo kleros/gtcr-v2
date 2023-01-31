@@ -21,7 +21,7 @@ const StyledCard = styled(Card)`
   display: flex;
   gap: 32px;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-wrap: wrap;
 `;
 
@@ -38,45 +38,38 @@ interface IStat {
 
 const stats: IStat[] = [
   {
-    title: "PNK staked",
+    title: "Total",
     getText: ({ pnkstakedDataPoints }) =>
       utils.commify(utils.formatUnits(getLastOrZero(pnkstakedDataPoints), 18)),
-    getSubtext: () => "$ 3 000 000",
+    getSubtext: () => "in 3 Networks",
     color: "purple",
-    icon: PNKIcon,
+    icon: BalanceIcon,
   },
   {
-    title: "ETH Paid to jurors",
+    title: "Total",
     getText: ({ ethpaidDataPoints }) =>
       utils.commify(utils.formatEther(getLastOrZero(ethpaidDataPoints))),
-    getSubtext: () => "$ 3,000,000",
+    getSubtext: () => "Curated",
     color: "blue",
     icon: EthereumIcon,
   },
   {
-    title: "PNK redistributed",
+    title: "All time deposit",
     getText: ({ pnkredistributedDataPoints }) =>
       utils.commify(
         utils.formatUnits(getLastOrZero(pnkredistributedDataPoints), 18)
       ),
-    getSubtext: () => "$ 3,000,000",
-    color: "purple",
+    getSubtext: () => "100 ETH",
+    color: "green",
     icon: PNKRedistributedIcon,
   },
   {
-    title: "Active jurors",
+    title: "Curators",
     getText: ({ activeJurorsDataPoints }) =>
       getLastOrZero(activeJurorsDataPoints),
-    getSubtext: () => "$ 3,000,000",
-    color: "green",
-    icon: JurorIcon,
-  },
-  {
-    title: "Cases",
-    getText: ({ casesDataPoints }) => getLastOrZero(casesDataPoints),
-    getSubtext: () => "$ 3,000,000",
+    getSubtext: () => "36 active",
     color: "orange",
-    icon: BalanceIcon,
+    icon: JurorIcon,
   },
 ];
 

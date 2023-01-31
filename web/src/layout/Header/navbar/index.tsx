@@ -1,44 +1,36 @@
 import React from "react";
 import styled from "styled-components";
-import KlerosSolutionsIcon from "svgs/menu-icons/kleros-solutions.svg";
-import LightButton from "components/LightButton";
-import Explore from "./Explore";
-import ConnectButton from "components/ConnectButton";
-import Menu from "./Menu";
+import { Link } from "react-router-dom";
 
-const Container = styled.div<{ isOpen: boolean }>`
-  position: absolute;
-  top: 64px;
-  left: 0;
-  right: 0;
-  z-index: 1;
-  background-color: ${({ theme }) => theme.whiteBackground};
-  border: 1px solid ${({ theme }) => theme.stroke};
-  box-shadow: 0px 2px 3px ${({ theme }) => theme.defaultShadow};
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  gap-x: 3rem;
+`;
 
-  transform-origin: top;
-  transform: scaleY(${({ isOpen }) => (isOpen ? "1" : "0")});
-  visibility: ${({ isOpen }) => (isOpen ? "visible" : "hidden")};
-  transition-property: transform, visibility;
-  transition-duration: ${({ theme }) => theme.transitionSpeed};
-  transition-timing-function: ease;
-
-  padding: 24px;
-
-  hr {
-    margin 24px 0;
+const LinkContainer = styled.div`
+  .sm-link {
+    color: ${({ theme }) => theme.secondaryText};
+    text-decoration: none;
+    font-size: 16px;
+    margin-right: 1.5rem;
   }
 `;
 
-const NavBar: React.FC<{ isOpen: boolean }> = ({ isOpen }) => (
-  <Container {...{ isOpen }}>
-    <LightButton text="Kleros Solutions" Icon={KlerosSolutionsIcon} />
-    <hr />
-    <Explore />
-    <hr />
-    <ConnectButton />
-    <hr />
-    <Menu />
+const links = [
+  { to: "/cases", text: "Curation Policy" },
+  { to: "/courts", text: "Integrate your product" },
+];
+
+const NavBar: React.FC = () => (
+  <Container>
+    {links.map(({ to, text }) => (
+      <LinkContainer key={text}>
+        <Link {...{ to }} className="sm-link">
+          {text}
+        </Link>
+      </LinkContainer>
+    ))}
   </Container>
 );
 
