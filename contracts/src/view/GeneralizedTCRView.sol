@@ -9,9 +9,9 @@
 pragma solidity 0.5.17;
 pragma experimental ABIEncoderV2;
 
-import { GeneralizedTCR, IArbitrator } from "../GeneralizedTCR.sol";
-import { BytesLib } from "solidity-bytes-utils/contracts/BytesLib.sol";
-import { RLPReader } from "solidity-rlp/contracts/RLPReader.sol";
+import {GeneralizedTCR, IArbitrator} from "../GeneralizedTCR.sol";
+import {BytesLib} from "solidity-bytes-utils/contracts/BytesLib.sol";
+import {RLPReader} from "solidity-rlp/contracts/RLPReader.sol";
 
 /* solium-disable max-len */
 /* solium-disable security/no-block-members */
@@ -122,7 +122,10 @@ contract GeneralizedTCRView {
             disputeStatus: IArbitrator.DisputeStatus.Waiting,
             numberOfRequests: round.request.item.numberOfRequests
         });
-        if (round.request.disputed && round.request.arbitrator.disputeStatus(result.disputeID) == IArbitrator.DisputeStatus.Appealable) {
+        if (
+            round.request.disputed &&
+            round.request.arbitrator.disputeStatus(result.disputeID) == IArbitrator.DisputeStatus.Appealable
+        ) {
             result.currentRuling = GeneralizedTCR.Party(round.request.arbitrator.currentRuling(result.disputeID));
             result.disputeStatus = round.request.arbitrator.disputeStatus(result.disputeID);
             (result.appealStart, result.appealEnd) = round.request.arbitrator.appealPeriod(result.disputeID);
@@ -200,24 +203,21 @@ contract GeneralizedTCRView {
         uint _count,
         bool[4] memory _skipState,
         bool[] memory _ignoreColumns
-    )
-        public
-        view
-        returns (QueryResult[] memory results)
-    {
+    ) public view returns (QueryResult[] memory results) {
         GeneralizedTCR gtcr = GeneralizedTCR(_address);
         RLPReader.RLPItem[] memory matchItem = _rlpEncodedMatch.toRlpItem().toList();
         results = new QueryResult[](_count == 0 ? gtcr.itemCount() : _count);
         uint itemsFound;
 
-        for(uint i = _cursor; i < (_count == 0 ? gtcr.itemCount() : _count); i++) { // Iterate over every item in storage.
+        for (uint i = _cursor; i < (_count == 0 ? gtcr.itemCount() : _count); i++) {
+            // Iterate over every item in storage.
             QueryResult memory item = getItem(_address, gtcr.itemList(i));
-            if (_skipState[uint(item.status)])
-                continue;
+            if (_skipState[uint(item.status)]) continue;
 
             RLPReader.RLPItem[] memory itemData = item.data.toRlpItem().toList();
             bool itemFound = true;
-            for (uint j = 0; j < matchItem.length; j++) { // Iterate over every column.
+            for (uint j = 0; j < matchItem.length; j++) {
+                // Iterate over every column.
                 if (!_ignoreColumns[j] && !itemData[j].toBytes().equal(matchItem[j].toBytes())) {
                     // This column should not be ignored and it did not match input. Item not found.
                     itemFound = false;
@@ -263,11 +263,7 @@ contract GeneralizedTCRView {
         uint[4] calldata _targets,
         bool[9] calldata _filter,
         address _party
-    )
-        external
-        view
-        returns (uint index, bool hasMore, bool indexFound)
-    {
+    ) external view returns (uint index, bool hasMore, bool indexFound) {
         GeneralizedTCR gtcr = GeneralizedTCR(_address);
         uint count = _targets[2];
         uint currPage = 1;
@@ -279,7 +275,7 @@ contract GeneralizedTCRView {
         // Keep the cursor as is otherwise.
         uint i = _filter[8] ? _targets[3] : _targets[3] == 0 ? gtcr.itemCount() - 1 : _targets[3];
 
-        for(; _filter[8] ? i < gtcr.itemCount() && count > 0 : i >= 0 && count > 0; ) {
+        for (; _filter[8] ? i < gtcr.itemCount() && count > 0 : i >= 0 && count > 0; ) {
             bytes32 itemID = gtcr.itemList(i);
             QueryResult memory item = getItem(_address, itemID);
             hasMore = true;
@@ -296,7 +292,7 @@ contract GeneralizedTCRView {
                 itemsMatched++;
                 if (itemsMatched % _targets[1] == 0) {
                     currPage++;
-                    if (currPage == _targets[0]){
+                    if (currPage == _targets[0]) {
                         if ((i == 0 && !_filter[8]) || (i == gtcr.itemCount() - 1 && _filter[8])) hasMore = false;
                         return (_filter[8] ? i + 1 : i - 1, hasMore, true);
                     }
@@ -338,11 +334,13 @@ contract GeneralizedTCRView {
      *  - Whether there are more items to iterate;
      *  - The index of the last item of the query. Useful as a starting point for the next query if counting in multiple steps.
      */
-    function countWithFilter(address _address, uint _cursorIndex, uint _count, bool[8] calldata _filter, address _party)
-        external
-        view
-        returns (uint count, bool hasMore, uint)
-    {
+    function countWithFilter(
+        address _address,
+        uint _cursorIndex,
+        uint _count,
+        bool[8] calldata _filter,
+        address _party
+    ) external view returns (uint count, bool hasMore, uint) {
         GeneralizedTCR gtcr = GeneralizedTCR(_address);
         if (gtcr.itemCount() == 0) return (0, false, 0);
 
@@ -395,11 +393,7 @@ contract GeneralizedTCRView {
         bool _oldestFirst,
         address _party,
         uint _limit
-    )
-        external
-        view
-        returns (QueryResult[] memory results, bool hasMore)
-    {
+    ) external view returns (QueryResult[] memory results, bool hasMore) {
         GeneralizedTCR gtcr = GeneralizedTCR(_address);
         results = new QueryResult[](_count);
         uint index = 0;
@@ -412,7 +406,7 @@ contract GeneralizedTCRView {
         // Keep the cursor as is otherwise.
         uint i = _oldestFirst ? _cursorIndex : _cursorIndex == 0 ? gtcr.itemCount() - 1 : _cursorIndex;
 
-        for(; _oldestFirst ? i < gtcr.itemCount() && count > 0 : i >= 0 && count > 0; ) {
+        for (; _oldestFirst ? i < gtcr.itemCount() && count > 0 : i >= 0 && count > 0; ) {
             bytes32 itemID = gtcr.itemList(i);
             QueryResult memory item = getItem(_address, itemID);
             hasMore = true;
@@ -447,38 +441,52 @@ contract GeneralizedTCRView {
      *  @param _contributor The address of the contributor.
      *  @return The amount withdrawable per round per request.
      */
-    function availableRewards(address _address, bytes32 _itemID, address _contributor) external view returns (uint rewards) {
+    function availableRewards(
+        address _address,
+        bytes32 _itemID,
+        address _contributor
+    ) external view returns (uint rewards) {
         GeneralizedTCR gtcr = GeneralizedTCR(_address);
 
         // Using arrays to avoid stack limit.
         uint[2] memory requestRoundCount = [uint(0), uint(0)];
         uint[2] memory indexes = [uint(0), uint(0)]; // Request index and round index.
 
-        (,,requestRoundCount[0]) = gtcr.getItemInfo(_itemID);
+        (, , requestRoundCount[0]) = gtcr.getItemInfo(_itemID);
         for (indexes[0]; indexes[0] < requestRoundCount[0]; indexes[0]++) {
             GeneralizedTCR.Party ruling;
             bool resolved;
-            (,,, resolved,, requestRoundCount[1], ruling,,,) = gtcr.getRequestInfo(_itemID, indexes[0]);
+            (, , , resolved, , requestRoundCount[1], ruling, , , ) = gtcr.getRequestInfo(_itemID, indexes[0]);
             if (!resolved) continue;
             for (indexes[1]; indexes[1] < requestRoundCount[1]; indexes[1]++) {
-                (
-                    ,
-                    uint[3] memory amountPaid,
-                    bool[3] memory hasPaid,
-                    uint feeRewards
-                ) = gtcr.getRoundInfo(_itemID, indexes[0], indexes[1]);
+                (, uint[3] memory amountPaid, bool[3] memory hasPaid, uint feeRewards) = gtcr.getRoundInfo(
+                    _itemID,
+                    indexes[0],
+                    indexes[1]
+                );
 
-                uint[3] memory roundContributions = gtcr.getContributions(_itemID, indexes[0], indexes[1], _contributor);
+                uint[3] memory roundContributions = gtcr.getContributions(
+                    _itemID,
+                    indexes[0],
+                    indexes[1],
+                    _contributor
+                );
                 if (!hasPaid[uint(GeneralizedTCR.Party.Requester)] || !hasPaid[uint(GeneralizedTCR.Party.Challenger)]) {
                     // Amount reimbursable if not enough fees were raised to appeal the ruling.
-                    rewards += roundContributions[uint(GeneralizedTCR.Party.Requester)] + roundContributions[uint(GeneralizedTCR.Party.Challenger)];
+                    rewards +=
+                        roundContributions[uint(GeneralizedTCR.Party.Requester)] +
+                        roundContributions[uint(GeneralizedTCR.Party.Challenger)];
                 } else if (ruling == GeneralizedTCR.Party.None) {
                     // Reimbursable fees proportional if there aren't a winner and loser.
                     rewards += amountPaid[uint(GeneralizedTCR.Party.Requester)] > 0
-                        ? (roundContributions[uint(GeneralizedTCR.Party.Requester)] * feeRewards) / (amountPaid[uint(GeneralizedTCR.Party.Challenger)] + amountPaid[uint(GeneralizedTCR.Party.Requester)])
+                        ? (roundContributions[uint(GeneralizedTCR.Party.Requester)] * feeRewards) /
+                            (amountPaid[uint(GeneralizedTCR.Party.Challenger)] +
+                                amountPaid[uint(GeneralizedTCR.Party.Requester)])
                         : 0;
                     rewards += amountPaid[uint(GeneralizedTCR.Party.Challenger)] > 0
-                        ? (roundContributions[uint(GeneralizedTCR.Party.Challenger)] * feeRewards) / (amountPaid[uint(GeneralizedTCR.Party.Challenger)] + amountPaid[uint(GeneralizedTCR.Party.Requester)])
+                        ? (roundContributions[uint(GeneralizedTCR.Party.Challenger)] * feeRewards) /
+                            (amountPaid[uint(GeneralizedTCR.Party.Challenger)] +
+                                amountPaid[uint(GeneralizedTCR.Party.Requester)])
                         : 0;
                 } else {
                     // Contributors to the winner take the rewards.
@@ -490,7 +498,6 @@ contract GeneralizedTCRView {
             indexes[1] = 0;
         }
     }
-
 
     // Functions and structs below used mainly to avoid stack limit.
     struct ItemData {
@@ -525,13 +532,9 @@ contract GeneralizedTCRView {
      *  @param _itemID The ID of the item to query.
      *  @return The round data.
      */
-    function getItemData(address _address, bytes32 _itemID) public view returns(ItemData memory item) {
+    function getItemData(address _address, bytes32 _itemID) public view returns (ItemData memory item) {
         GeneralizedTCR gtcr = GeneralizedTCR(_address);
-        (
-            bytes memory data,
-            GeneralizedTCR.Status status,
-            uint numberOfRequests
-        ) = gtcr.getItemInfo(_itemID);
+        (bytes memory data, GeneralizedTCR.Status status, uint numberOfRequests) = gtcr.getItemInfo(_itemID);
         item = ItemData(data, status, numberOfRequests);
     }
 
@@ -540,7 +543,7 @@ contract GeneralizedTCRView {
      *  @param _itemID The ID of the item to query.
      *  @return The round data.
      */
-    function getLatestRequestData(address _address, bytes32 _itemID) public view returns (RequestData memory request)  {
+    function getLatestRequestData(address _address, bytes32 _itemID) public view returns (RequestData memory request) {
         GeneralizedTCR gtcr = GeneralizedTCR(_address);
         ItemData memory item = getItemData(_address, _itemID);
         (
@@ -553,6 +556,7 @@ contract GeneralizedTCRView {
             GeneralizedTCR.Party ruling,
             IArbitrator arbitrator,
             bytes memory arbitratorExtraData,
+
         ) = gtcr.getRequestInfo(_itemID, item.numberOfRequests - 1);
         request = RequestData(
             item,
@@ -573,21 +577,14 @@ contract GeneralizedTCRView {
      *  @param _itemID The ID of the item to query.
      *  @return The round data.
      */
-    function getLatestRoundRequestData(address _address, bytes32 _itemID) public view returns (RoundData memory round)  {
+    function getLatestRoundRequestData(address _address, bytes32 _itemID) public view returns (RoundData memory round) {
         GeneralizedTCR gtcr = GeneralizedTCR(_address);
         RequestData memory request = getLatestRequestData(_address, _itemID);
-        (
-            bool appealed,
-            uint[3] memory amountPaid,
-            bool[3] memory hasPaid,
-            uint feeRewards
-        ) = gtcr.getRoundInfo(_itemID, request.item.numberOfRequests - 1, request.numberOfRounds - 1);
-        round = RoundData(
-            request,
-            appealed,
-            amountPaid,
-            hasPaid,
-            feeRewards
+        (bool appealed, uint[3] memory amountPaid, bool[3] memory hasPaid, uint feeRewards) = gtcr.getRoundInfo(
+            _itemID,
+            request.item.numberOfRequests - 1,
+            request.numberOfRounds - 1
         );
+        round = RoundData(request, appealed, amountPaid, hasPaid, feeRewards);
     }
 }

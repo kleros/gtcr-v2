@@ -56,11 +56,10 @@ contract EnhancedAppealableArbitrator is AppealableArbitrator {
      *  @param _disputeID The ID of the dispute.
      *  @param _extraData Additional info about the appeal.
      */
-    function appeal(uint256 _disputeID, bytes memory _extraData)
-        public
-        payable
-        requireAppealFee(_disputeID, _extraData)
-    {
+    function appeal(
+        uint256 _disputeID,
+        bytes memory _extraData
+    ) public payable requireAppealFee(_disputeID, _extraData) {
         emit AppealDecision(_disputeID, IArbitrable(msg.sender));
         return super.appeal(_disputeID, _extraData);
     }

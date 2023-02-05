@@ -8,14 +8,13 @@
 
 pragma solidity ^0.5.16;
 
-import { GeneralizedTCR } from "./GeneralizedTCR.sol";
+import {GeneralizedTCR} from "./GeneralizedTCR.sol";
 
 /**
  *  @title BatchWithdraw
  *  Withdraw fees and rewards from contributions to disputes rounds in batches.
  */
 contract BatchWithdraw {
-
     /** @dev Withdraws rewards and reimbursements of multiple rounds at once. This function is O(n) where n is the number of rounds. This could exceed gas limits, therefore this function should be used only as a utility and not be relied upon by other contracts.
      *  @param _address The address of the GTCR.
      *  @param _contributor The address that made contributions to the request.
@@ -33,7 +32,7 @@ contract BatchWithdraw {
         uint _count
     ) public {
         GeneralizedTCR gtcr = GeneralizedTCR(_address);
-        (,,,,,uint numberOfRounds,,,,) = gtcr.getRequestInfo(_itemID, _request);
+        (, , , , , uint numberOfRounds, , , , ) = gtcr.getRequestInfo(_itemID, _request);
         for (uint i = _cursor; i < numberOfRounds && (_count == 0 || i < _count); i++)
             gtcr.withdrawFeesAndRewards(_contributor, _itemID, _request, i);
     }
@@ -57,11 +56,7 @@ contract BatchWithdraw {
         uint _roundCount
     ) external {
         GeneralizedTCR gtcr = GeneralizedTCR(_address);
-        (
-            ,
-            ,
-            uint numberOfRequests
-        ) = gtcr.getItemInfo(_itemID);
+        (, , uint numberOfRequests) = gtcr.getItemInfo(_itemID);
         for (uint i = _cursor; i < numberOfRequests && (_count == 0 || i < _count); i++)
             batchRoundWithdraw(_address, _contributor, _itemID, i, _roundCursor, _roundCount);
     }

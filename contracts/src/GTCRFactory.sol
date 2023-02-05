@@ -8,7 +8,7 @@
 
 pragma solidity ^0.5.16;
 
-import { GeneralizedTCR, IArbitrator } from "./GeneralizedTCR.sol";
+import {GeneralizedTCR, IArbitrator} from "./GeneralizedTCR.sol";
 
 /* solium-disable max-len */
 
@@ -17,7 +17,6 @@ import { GeneralizedTCR, IArbitrator } from "./GeneralizedTCR.sol";
  *  This contract acts as a registry for GeneralizedTCR instances.
  */
 contract GTCRFactory {
-
     /**
      *  @dev Emitted when a new Generalized TCR contract is deployed using this factory.
      *  @param _address The address of the newly deployed Generalized TCR.
@@ -59,18 +58,18 @@ contract GTCRFactory {
         uint[3] memory _stakeMultipliers
     ) public {
         GeneralizedTCR instance = new GeneralizedTCR(
-                _arbitrator,
-                _arbitratorExtraData,
-                _connectedTCR,
-                _registrationMetaEvidence,
-                _clearingMetaEvidence,
-                _governor,
-                _submissionBaseDeposit,
-                _removalBaseDeposit,
-                _submissionChallengeBaseDeposit,
-                _removalChallengeBaseDeposit,
-                _challengePeriodDuration,
-                _stakeMultipliers
+            _arbitrator,
+            _arbitratorExtraData,
+            _connectedTCR,
+            _registrationMetaEvidence,
+            _clearingMetaEvidence,
+            _governor,
+            _submissionBaseDeposit,
+            _removalBaseDeposit,
+            _submissionChallengeBaseDeposit,
+            _removalChallengeBaseDeposit,
+            _challengePeriodDuration,
+            _stakeMultipliers
         );
         instances.push(instance);
         emit NewGTCR(instance);

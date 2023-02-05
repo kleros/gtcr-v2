@@ -8,9 +8,9 @@
 
 pragma solidity ^0.5.16;
 
-import { IArbitrable, IArbitrator } from "@kleros/erc-792/contracts/IArbitrator.sol";
-import { IEvidence } from "@kleros/erc-792/contracts/erc-1497/IEvidence.sol";
-import { CappedMath } from "./utils/CappedMath.sol";
+import {IArbitrable, IArbitrator} from "@kleros/erc-792/contracts/IArbitrator.sol";
+import {IEvidence} from "@kleros/erc-792/contracts/erc-1497/IEvidence.sol";
+import {CappedMath} from "./utils/CappedMath.sol";
 
 /* solium-disable max-len */
 /* solium-disable security/no-block-members */
@@ -93,12 +93,15 @@ contract GeneralizedTCR is IArbitrable, IEvidence {
 
     bytes32[] public itemList; // List of IDs of all submitted items.
     mapping(bytes32 => Item) public items; // Maps the item ID to its data in the form items[_itemID].
-    mapping(address => mapping(uint => bytes32)) public arbitratorDisputeIDToItem;  // Maps a dispute ID to the ID of the item with the disputed request in the form arbitratorDisputeIDToItem[arbitrator][disputeID].
+    mapping(address => mapping(uint => bytes32)) public arbitratorDisputeIDToItem; // Maps a dispute ID to the ID of the item with the disputed request in the form arbitratorDisputeIDToItem[arbitrator][disputeID].
     mapping(bytes32 => uint) public itemIDtoIndex; // Maps an item's ID to its position in the list in the form itemIDtoIndex[itemID].
 
-     /* Modifiers */
+    /* Modifiers */
 
-    modifier onlyGovernor {require(msg.sender == governor, "The caller must be the governor."); _;}
+    modifier onlyGovernor() {
+        require(msg.sender == governor, "The caller must be the governor.");
+        _;
+    }
 
     /* Events */
 
@@ -111,11 +114,11 @@ contract GeneralizedTCR is IArbitrable, IEvidence {
      *  @param _resolved Whether the request is executed.
      */
     event ItemStatusChange(
-      bytes32 indexed _itemID,
-      uint indexed _requestIndex,
-      uint indexed _roundIndex,
-      bool _disputed,
-      bool _resolved
+        bytes32 indexed _itemID,
+        uint indexed _requestIndex,
+        uint indexed _roundIndex,
+        bool _disputed,
+        bool _resolved
     );
 
     /**
@@ -126,10 +129,10 @@ contract GeneralizedTCR is IArbitrable, IEvidence {
      *  @param _data The item data.
      */
     event ItemSubmitted(
-      bytes32 indexed _itemID,
-      address indexed _submitter,
-      uint indexed _evidenceGroupID,
-      bytes _data
+        bytes32 indexed _itemID,
+        address indexed _submitter,
+        uint indexed _evidenceGroupID,
+        bytes _data
     );
 
     /**
@@ -138,11 +141,7 @@ contract GeneralizedTCR is IArbitrable, IEvidence {
      *  @param _requestIndex The index of the latest request.
      *  @param _requestType Whether it is a registration or a removal request.
      */
-    event RequestSubmitted(
-      bytes32 indexed _itemID,
-      uint indexed _requestIndex,
-      Status indexed _requestType
-    );
+    event RequestSubmitted(bytes32 indexed _itemID, uint indexed _requestIndex, Status indexed _requestType);
 
     /**
      *  @dev Emitted when someone submits a request. This is useful to quickly find an item and request from an evidence event and vice-versa.
@@ -150,11 +149,7 @@ contract GeneralizedTCR is IArbitrable, IEvidence {
      *  @param _requestIndex The index of the latest request.
      *  @param _evidenceGroupID The evidence group ID used for this request.
      */
-    event RequestEvidenceGroupID(
-      bytes32 indexed _itemID,
-      uint indexed _requestIndex,
-      uint indexed _evidenceGroupID
-    );
+    event RequestEvidenceGroupID(bytes32 indexed _itemID, uint indexed _requestIndex, uint indexed _evidenceGroupID);
 
     /**
      *  @dev Emitted when a party contributes to an appeal.
@@ -180,12 +175,7 @@ contract GeneralizedTCR is IArbitrable, IEvidence {
      *  @param _round The index of the round.
      *  @param _side The side that is fully funded.
      */
-    event HasPaidAppealFee(
-      bytes32 indexed _itemID,
-      uint indexed _request,
-      uint indexed _round,
-      Party _side
-    );
+    event HasPaidAppealFee(bytes32 indexed _itemID, uint indexed _request, uint indexed _round, Party _side);
 
     /** @dev Emitted when the address of the connected TCR is set. The connected TCR is an instance of the Generalized TCR contract where each item is the address of a TCR related to this one.
      *  @param _connectedTCR The address of the connected TCR.
@@ -260,7 +250,7 @@ contract GeneralizedTCR is IArbitrable, IEvidence {
      *  @param _itemID The ID of the item to remove.
      *  @param _evidence A link to an evidence using its URI. Ignored if not provided.
      */
-    function removeItem(bytes32 _itemID,  string calldata _evidence) external payable {
+    function removeItem(bytes32 _itemID, string calldata _evidence) external payable {
         require(items[_itemID].status == Status.Registered, "Item must be registered to be removed.");
         Item storage item = items[_itemID];
 
@@ -289,7 +279,10 @@ contract GeneralizedTCR is IArbitrable, IEvidence {
         );
 
         Request storage request = item.requests[item.requests.length - 1];
-        require(now - request.submissionTime <= challengePeriodDuration, "Challenges must occur during the challenge period.");
+        require(
+            now - request.submissionTime <= challengePeriodDuration,
+            "Challenges must occur during the challenge period."
+        );
         require(!request.disputed, "The request should not have already been disputed.");
 
         request.parties[uint(Party.Challenger)] = msg.sender;
@@ -305,19 +298,17 @@ contract GeneralizedTCR is IArbitrable, IEvidence {
         round.hasPaid[uint(Party.Challenger)] = true;
 
         // Raise a dispute.
-        request.disputeID = request.arbitrator.createDispute.value(arbitrationCost)(RULING_OPTIONS, request.arbitratorExtraData);
+        request.disputeID = request.arbitrator.createDispute.value(arbitrationCost)(
+            RULING_OPTIONS,
+            request.arbitratorExtraData
+        );
         arbitratorDisputeIDToItem[address(request.arbitrator)][request.disputeID] = _itemID;
         request.disputed = true;
         request.rounds.length++;
         round.feeRewards = round.feeRewards.subCap(arbitrationCost);
 
         uint evidenceGroupID = uint(keccak256(abi.encodePacked(_itemID, item.requests.length - 1)));
-        emit Dispute(
-            request.arbitrator,
-            request.disputeID,
-            request.metaEvidenceID,
-            evidenceGroupID
-        );
+        emit Dispute(request.arbitrator, request.disputeID, request.metaEvidenceID, evidenceGroupID);
 
         if (bytes(_evidence).length > 0) {
             emit Evidence(request.arbitrator, evidenceGroupID, msg.sender, _evidence);
@@ -347,19 +338,16 @@ contract GeneralizedTCR is IArbitrable, IEvidence {
         {
             Party winner = Party(request.arbitrator.currentRuling(request.disputeID));
             Party loser;
-            if (winner == Party.Requester)
-                loser = Party.Challenger;
-            else if (winner == Party.Challenger)
-                loser = Party.Requester;
-            require(_side != loser || (now-appealPeriodStart < (appealPeriodEnd-appealPeriodStart)/2), "The loser must contribute during the first half of the appeal period.");
+            if (winner == Party.Requester) loser = Party.Challenger;
+            else if (winner == Party.Challenger) loser = Party.Requester;
+            require(
+                _side != loser || (now - appealPeriodStart < (appealPeriodEnd - appealPeriodStart) / 2),
+                "The loser must contribute during the first half of the appeal period."
+            );
 
-
-            if (_side == winner)
-                multiplier = winnerStakeMultiplier;
-            else if (_side == loser)
-                multiplier = loserStakeMultiplier;
-            else
-                multiplier = sharedStakeMultiplier;
+            if (_side == winner) multiplier = winnerStakeMultiplier;
+            else if (_side == loser) multiplier = loserStakeMultiplier;
+            else multiplier = sharedStakeMultiplier;
         }
         /* solium-enable indentation */
 
@@ -405,23 +393,27 @@ contract GeneralizedTCR is IArbitrable, IEvidence {
         uint reward;
         if (!round.hasPaid[uint(Party.Requester)] || !round.hasPaid[uint(Party.Challenger)]) {
             // Reimburse if not enough fees were raised to appeal the ruling.
-            reward = round.contributions[_beneficiary][uint(Party.Requester)] + round.contributions[_beneficiary][uint(Party.Challenger)];
+            reward =
+                round.contributions[_beneficiary][uint(Party.Requester)] +
+                round.contributions[_beneficiary][uint(Party.Challenger)];
         } else if (request.ruling == Party.None) {
             // Reimburse unspent fees proportionally if there is no winner or loser.
             uint rewardRequester = round.amountPaid[uint(Party.Requester)] > 0
-                ? (round.contributions[_beneficiary][uint(Party.Requester)] * round.feeRewards) / (round.amountPaid[uint(Party.Challenger)] + round.amountPaid[uint(Party.Requester)])
+                ? (round.contributions[_beneficiary][uint(Party.Requester)] * round.feeRewards) /
+                    (round.amountPaid[uint(Party.Challenger)] + round.amountPaid[uint(Party.Requester)])
                 : 0;
             uint rewardChallenger = round.amountPaid[uint(Party.Challenger)] > 0
-                ? (round.contributions[_beneficiary][uint(Party.Challenger)] * round.feeRewards) / (round.amountPaid[uint(Party.Challenger)] + round.amountPaid[uint(Party.Requester)])
+                ? (round.contributions[_beneficiary][uint(Party.Challenger)] * round.feeRewards) /
+                    (round.amountPaid[uint(Party.Challenger)] + round.amountPaid[uint(Party.Requester)])
                 : 0;
 
             reward = rewardRequester + rewardChallenger;
         } else {
             // Reward the winner.
             reward = round.amountPaid[uint(request.ruling)] > 0
-                ? (round.contributions[_beneficiary][uint(request.ruling)] * round.feeRewards) / round.amountPaid[uint(request.ruling)]
+                ? (round.contributions[_beneficiary][uint(request.ruling)] * round.feeRewards) /
+                    round.amountPaid[uint(request.ruling)]
                 : 0;
-
         }
         round.contributions[_beneficiary][uint(Party.Requester)] = 0;
         round.contributions[_beneficiary][uint(Party.Challenger)] = 0;
@@ -435,18 +427,12 @@ contract GeneralizedTCR is IArbitrable, IEvidence {
     function executeRequest(bytes32 _itemID) external {
         Item storage item = items[_itemID];
         Request storage request = item.requests[item.requests.length - 1];
-        require(
-            now - request.submissionTime > challengePeriodDuration,
-            "Time to challenge the request must pass."
-        );
+        require(now - request.submissionTime > challengePeriodDuration, "Time to challenge the request must pass.");
         require(!request.disputed, "The request should not be disputed.");
 
-        if (item.status == Status.RegistrationRequested)
-            item.status = Status.Registered;
-        else if (item.status == Status.ClearingRequested)
-            item.status = Status.Absent;
-        else
-            revert("There must be a request.");
+        if (item.status == Status.RegistrationRequested) item.status = Status.Registered;
+        else if (item.status == Status.ClearingRequested) item.status = Status.Absent;
+        else revert("There must be a request.");
 
         request.resolved = true;
         emit ItemStatusChange(_itemID, item.requests.length - 1, request.rounds.length - 1, false, true);
@@ -471,10 +457,10 @@ contract GeneralizedTCR is IArbitrable, IEvidence {
         require(!request.resolved, "The request must not be resolved.");
 
         // The ruling is inverted if the loser paid its fees.
-        if (round.hasPaid[uint(Party.Requester)] == true) // If one side paid its fees, the ruling is in its favor. Note that if the other side had also paid, an appeal would have been created.
+        if (round.hasPaid[uint(Party.Requester)] == true)
+            // If one side paid its fees, the ruling is in its favor. Note that if the other side had also paid, an appeal would have been created.
             resultRuling = Party.Requester;
-        else if (round.hasPaid[uint(Party.Challenger)] == true)
-            resultRuling = Party.Challenger;
+        else if (round.hasPaid[uint(Party.Challenger)] == true) resultRuling = Party.Challenger;
 
         emit Ruling(IArbitrator(msg.sender), _disputeID, uint(resultRuling));
         executeRuling(_disputeID, uint(resultRuling));
@@ -580,7 +566,10 @@ contract GeneralizedTCR is IArbitrable, IEvidence {
      *  @param _registrationMetaEvidence The meta evidence to be used for future registration request disputes.
      *  @param _clearingMetaEvidence The meta evidence to be used for future clearing request disputes.
      */
-    function changeMetaEvidence(string calldata _registrationMetaEvidence, string calldata _clearingMetaEvidence) external onlyGovernor {
+    function changeMetaEvidence(
+        string calldata _registrationMetaEvidence,
+        string calldata _clearingMetaEvidence
+    ) external onlyGovernor {
         metaEvidenceUpdates++;
         emit MetaEvidence(2 * metaEvidenceUpdates, _registrationMetaEvidence);
         emit MetaEvidence(2 * metaEvidenceUpdates + 1, _clearingMetaEvidence);
@@ -639,15 +628,13 @@ contract GeneralizedTCR is IArbitrable, IEvidence {
      *  @return taken The amount of ETH taken.
      *  @return remainder The amount of ETH left from the contribution.
      */
-    function calculateContribution(uint _available, uint _requiredAmount)
-        internal
-        pure
-        returns(uint taken, uint remainder)
-    {
-        if (_requiredAmount > _available)
-            return (_available, 0); // Take whatever is available, return 0 as leftover ETH.
-        else
-            return (_requiredAmount, _available - _requiredAmount);
+    function calculateContribution(
+        uint _available,
+        uint _requiredAmount
+    ) internal pure returns (uint taken, uint remainder) {
+        if (_requiredAmount > _available) return (_available, 0);
+        // Take whatever is available, return 0 as leftover ETH.
+        else return (_requiredAmount, _available - _requiredAmount);
     }
 
     /** @dev Make a fee contribution.
@@ -658,11 +645,20 @@ contract GeneralizedTCR is IArbitrable, IEvidence {
      *  @param _totalRequired The total amount required for this side.
      *  @return The amount of appeal fees contributed.
      */
-    function contribute(Round storage _round, Party _side, address payable _contributor, uint _amount, uint _totalRequired) internal returns (uint) {
+    function contribute(
+        Round storage _round,
+        Party _side,
+        address payable _contributor,
+        uint _amount,
+        uint _totalRequired
+    ) internal returns (uint) {
         // Take up to the amount necessary to fund the current round at the current costs.
         uint contribution; // Amount contributed.
         uint remainingETH; // Remaining ETH to send back.
-        (contribution, remainingETH) = calculateContribution(_amount, _totalRequired.subCap(_round.amountPaid[uint(_side)]));
+        (contribution, remainingETH) = calculateContribution(
+            _amount,
+            _totalRequired.subCap(_round.amountPaid[uint(_side)])
+        );
         _round.contributions[_contributor][uint(_side)] += contribution;
         _round.amountPaid[uint(_side)] += contribution;
         _round.feeRewards += contribution;
@@ -684,16 +680,13 @@ contract GeneralizedTCR is IArbitrable, IEvidence {
 
         Party winner = Party(_ruling);
 
-        if (winner == Party.Requester) { // Execute Request.
-            if (item.status == Status.RegistrationRequested)
-                item.status = Status.Registered;
-            else if (item.status == Status.ClearingRequested)
-                item.status = Status.Absent;
+        if (winner == Party.Requester) {
+            // Execute Request.
+            if (item.status == Status.RegistrationRequested) item.status = Status.Registered;
+            else if (item.status == Status.ClearingRequested) item.status = Status.Absent;
         } else {
-            if (item.status == Status.RegistrationRequested)
-                item.status = Status.Absent;
-            else if (item.status == Status.ClearingRequested)
-                item.status = Status.Registered;
+            if (item.status == Status.RegistrationRequested) item.status = Status.Absent;
+            else if (item.status == Status.ClearingRequested) item.status = Status.Registered;
         }
 
         request.resolved = true;
@@ -733,7 +726,7 @@ contract GeneralizedTCR is IArbitrable, IEvidence {
         uint _request,
         uint _round,
         address _contributor
-    ) external view returns(uint[3] memory contributions) {
+    ) external view returns (uint[3] memory contributions) {
         Item storage item = items[_itemID];
         Request storage request = item.requests[_request];
         Round storage round = request.rounds[_round];
@@ -746,21 +739,11 @@ contract GeneralizedTCR is IArbitrable, IEvidence {
      *  @return status The current status of the item.
      *  @return numberOfRequests Length of list of status change requests made for the item.
      */
-    function getItemInfo(bytes32 _itemID)
-        external
-        view
-        returns (
-            bytes memory data,
-            Status status,
-            uint numberOfRequests
-        )
-    {
+    function getItemInfo(
+        bytes32 _itemID
+    ) external view returns (bytes memory data, Status status, uint numberOfRequests) {
         Item storage item = items[_itemID];
-        return (
-            item.data,
-            item.status,
-            item.requests.length
-        );
+        return (item.data, item.status, item.requests.length);
     }
 
     /** @dev Gets information on a request made for the item.
@@ -777,7 +760,10 @@ contract GeneralizedTCR is IArbitrable, IEvidence {
      *  @return arbitratorExtraData The extra data for the trusted arbitrator of this request.
      *  @return metaEvidenceID The meta evidence to be used in a dispute for this case.
      */
-    function getRequestInfo(bytes32 _itemID, uint _request)
+    function getRequestInfo(
+        bytes32 _itemID,
+        uint _request
+    )
         external
         view
         returns (
@@ -817,24 +803,14 @@ contract GeneralizedTCR is IArbitrable, IEvidence {
      *  @return hasPaid True if the Party has fully paid its fee in this round.
      *  @return feeRewards Sum of reimbursable fees and stake rewards available to the parties that made contributions to the side that ultimately wins a dispute.
      */
-    function getRoundInfo(bytes32 _itemID, uint _request, uint _round)
-        external
-        view
-        returns (
-            bool appealed,
-            uint[3] memory amountPaid,
-            bool[3] memory hasPaid,
-            uint feeRewards
-        )
-    {
+    function getRoundInfo(
+        bytes32 _itemID,
+        uint _request,
+        uint _round
+    ) external view returns (bool appealed, uint[3] memory amountPaid, bool[3] memory hasPaid, uint feeRewards) {
         Item storage item = items[_itemID];
         Request storage request = item.requests[_request];
         Round storage round = request.rounds[_round];
-        return (
-            _round != (request.rounds.length - 1),
-            round.amountPaid,
-            round.hasPaid,
-            round.feeRewards
-        );
+        return (_round != (request.rounds.length - 1), round.amountPaid, round.hasPaid, round.feeRewards);
     }
 }

@@ -12,7 +12,7 @@ pragma solidity ^0.5.16;
  * @dev Math operations with caps for under and overflow.
  */
 library CappedMath128 {
-    uint128 private constant UINT128_MAX = 2**128 - 1;
+    uint128 private constant UINT128_MAX = 2 ** 128 - 1;
 
     /**
      * @dev Adds two unsigned integers, returns 2^128 - 1 on overflow.

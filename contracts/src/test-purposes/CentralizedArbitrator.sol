@@ -8,16 +8,15 @@
 
 pragma solidity ^0.5.11;
 
-import { IArbitrator, IArbitrable } from "@kleros/erc-792/contracts/IArbitrator.sol";
+import {IArbitrator, IArbitrable} from "@kleros/erc-792/contracts/IArbitrator.sol";
 
 /** @title Centralized Arbitrator
  *  @dev This is a centralized arbitrator deciding alone on the result of disputes. No appeals are possible.
  */
 contract CentralizedArbitrator is IArbitrator {
-
     address public owner = msg.sender;
     uint arbitrationPrice; // Not public because arbitrationCost already acts as an accessor.
-    uint constant NOT_PAYABLE_VALUE = (2**256-2)/2; // High value to be sure that the appeal is too expensive.
+    uint constant NOT_PAYABLE_VALUE = (2 ** 256 - 2) / 2; // High value to be sure that the appeal is too expensive.
 
     struct DisputeStruct {
         IArbitrable arbitrated;
@@ -27,7 +26,10 @@ contract CentralizedArbitrator is IArbitrator {
         DisputeStatus status;
     }
 
-    modifier onlyOwner {require(msg.sender==owner, "Can only be called by the owner."); _;}
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Can only be called by the owner.");
+        _;
+    }
     modifier requireArbitrationFee(bytes memory _extraData) {
         require(msg.value >= arbitrationCost(_extraData), "Not enough ETH to cover arbitration costs.");
         _;
@@ -53,7 +55,7 @@ contract CentralizedArbitrator is IArbitrator {
      *  @param _extraData Not used by this contract.
      *  @return fee Amount to be paid.
      */
-    function arbitrationCost(bytes memory _extraData) public view returns(uint fee) {
+    function arbitrationCost(bytes memory _extraData) public view returns (uint fee) {
         return arbitrationPrice;
     }
 
@@ -62,7 +64,7 @@ contract CentralizedArbitrator is IArbitrator {
      *  @param _extraData Not used by this contract.
      *  @return fee Amount to be paid.
      */
-    function appealCost(uint _disputeID, bytes memory _extraData) public view returns(uint fee) {
+    function appealCost(uint _disputeID, bytes memory _extraData) public view returns (uint fee) {
         return NOT_PAYABLE_VALUE;
     }
 
@@ -72,14 +74,21 @@ contract CentralizedArbitrator is IArbitrator {
      *  @param _extraData Can be used to give additional info on the dispute to be created.
      *  @return disputeID ID of the dispute created.
      */
-    function createDispute(uint _choices, bytes memory _extraData) public payable requireArbitrationFee(_extraData) returns(uint disputeID)  {
-        disputeID = disputes.push(DisputeStruct({
-            arbitrated: IArbitrable(msg.sender),
-            choices: _choices,
-            fee: msg.value,
-            ruling: 0,
-            status: DisputeStatus.Waiting
-            })) - 1; // Create the dispute and return its number.
+    function createDispute(
+        uint _choices,
+        bytes memory _extraData
+    ) public payable requireArbitrationFee(_extraData) returns (uint disputeID) {
+        disputeID =
+            disputes.push(
+                DisputeStruct({
+                    arbitrated: IArbitrable(msg.sender),
+                    choices: _choices,
+                    fee: msg.value,
+                    ruling: 0,
+                    status: DisputeStatus.Waiting
+                })
+            ) -
+            1; // Create the dispute and return its number.
         emit DisputeCreation(disputeID, IArbitrable(msg.sender));
     }
 
@@ -96,7 +105,7 @@ contract CentralizedArbitrator is IArbitrator {
         dispute.status = DisputeStatus.Solved;
 
         msg.sender.send(dispute.fee); // Avoid blocking.
-        dispute.arbitrated.rule(_disputeID,_ruling);
+        dispute.arbitrated.rule(_disputeID, _ruling);
     }
 
     /** @dev Give a ruling. UNTRUSTED.
@@ -111,7 +120,7 @@ contract CentralizedArbitrator is IArbitrator {
      *  @param _disputeID ID of the dispute to rule.
      *  @return status The status of the dispute.
      */
-    function disputeStatus(uint _disputeID) public view returns(DisputeStatus status) {
+    function disputeStatus(uint _disputeID) public view returns (DisputeStatus status) {
         return disputes[_disputeID].status;
     }
 
@@ -119,7 +128,7 @@ contract CentralizedArbitrator is IArbitrator {
      *  @param _disputeID ID of the dispute to rule.
      *  @return ruling The ruling which would or has been given.
      */
-    function currentRuling(uint _disputeID) public view returns(uint ruling) {
+    function currentRuling(uint _disputeID) public view returns (uint ruling) {
         return disputes[_disputeID].ruling;
     }
 }

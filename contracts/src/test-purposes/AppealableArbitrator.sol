@@ -1,11 +1,11 @@
 /**
-*  https://contributing.kleros.io/smart-contract-workflow
-*  @authors: [@epiqueras, @ferittuncer, @unknownunknown1, @mtsalenc]
-*  @reviewers: []
-*  @auditors: []
-*  @bounties: []
-*  @deployments: []
-*/
+ *  https://contributing.kleros.io/smart-contract-workflow
+ *  @authors: [@epiqueras, @ferittuncer, @unknownunknown1, @mtsalenc]
+ *  @reviewers: []
+ *  @auditors: []
+ *  @bounties: []
+ *  @deployments: []
+ */
 
 pragma solidity ^0.5.11;
 
@@ -26,7 +26,10 @@ contract AppealableArbitrator is CentralizedArbitrator, IArbitrable {
 
     /* Modifiers */
 
-    modifier onlyArbitrator {require(msg.sender == address(arbitrator), "Can only be called by the arbitrator."); _;}
+    modifier onlyArbitrator() {
+        require(msg.sender == address(arbitrator), "Can only be called by the arbitrator.");
+        _;
+    }
     modifier requireAppealFee(uint _disputeID, bytes memory _extraData) {
         require(msg.value >= appealCost(_disputeID, _extraData), "Not enough ETH to cover appeal costs.");
         _;
@@ -78,9 +81,11 @@ contract AppealableArbitrator is CentralizedArbitrator, IArbitrable {
     /** @dev Gets the specified dispute's latest appeal ID.
      *  @param _disputeID The ID of the dispute.
      */
-    function getAppealDisputeID(uint _disputeID) external view returns(uint disputeID) {
+    function getAppealDisputeID(uint _disputeID) external view returns (uint disputeID) {
         if (appealDisputes[_disputeID].arbitrator != IArbitrator(address(0)))
-            disputeID = AppealableArbitrator(address(appealDisputes[_disputeID].arbitrator)).getAppealDisputeID(appealDisputes[_disputeID].appealDisputeID);
+            disputeID = AppealableArbitrator(address(appealDisputes[_disputeID].arbitrator)).getAppealDisputeID(
+                appealDisputes[_disputeID].appealDisputeID
+            );
         else disputeID = _disputeID;
     }
 
@@ -92,10 +97,16 @@ contract AppealableArbitrator is CentralizedArbitrator, IArbitrable {
      */
     function appeal(uint _disputeID, bytes memory _extraData) public payable requireAppealFee(_disputeID, _extraData) {
         if (appealDisputes[_disputeID].arbitrator != IArbitrator(address(0)))
-            appealDisputes[_disputeID].arbitrator.appeal.value(msg.value)(appealDisputes[_disputeID].appealDisputeID, _extraData);
+            appealDisputes[_disputeID].arbitrator.appeal.value(msg.value)(
+                appealDisputes[_disputeID].appealDisputeID,
+                _extraData
+            );
         else {
             appealDisputes[_disputeID].arbitrator = arbitrator;
-            appealDisputes[_disputeID].appealDisputeID = arbitrator.createDispute.value(msg.value)(disputes[_disputeID].choices, _extraData);
+            appealDisputes[_disputeID].appealDisputeID = arbitrator.createDispute.value(msg.value)(
+                disputes[_disputeID].choices,
+                _extraData
+            );
             appealDisputeIDsToDisputeIDs[appealDisputes[_disputeID].appealDisputeID] = _disputeID;
         }
     }
@@ -107,7 +118,10 @@ contract AppealableArbitrator is CentralizedArbitrator, IArbitrable {
     function giveRuling(uint _disputeID, uint _ruling) public {
         require(disputes[_disputeID].status != DisputeStatus.Solved, "The specified dispute is already resolved.");
         if (appealDisputes[_disputeID].arbitrator != IArbitrator(address(0))) {
-            require(IArbitrator(msg.sender) == appealDisputes[_disputeID].arbitrator, "Appealed disputes must be ruled by their back up arbitrator.");
+            require(
+                IArbitrator(msg.sender) == appealDisputes[_disputeID].arbitrator,
+                "Appealed disputes must be ruled by their back up arbitrator."
+            );
             super._giveRuling(_disputeID, _ruling);
         } else {
             require(msg.sender == owner, "Not appealed disputes must be ruled by the owner.");
@@ -130,9 +144,9 @@ contract AppealableArbitrator is CentralizedArbitrator, IArbitrable {
      *  @param _ruling Ruling given by the arbitrator. Note that 0 is reserved for "Not able/wanting to make a decision".
      */
     function rule(uint _disputeID, uint _ruling) public onlyArbitrator {
-        emit Ruling(IArbitrator(msg.sender),_disputeID,_ruling);
+        emit Ruling(IArbitrator(msg.sender), _disputeID, _ruling);
 
-        executeRuling(_disputeID,_ruling);
+        executeRuling(_disputeID, _ruling);
     }
 
     /* Public Views */
@@ -142,9 +156,12 @@ contract AppealableArbitrator is CentralizedArbitrator, IArbitrable {
      *  @param _extraData Additional info about the appeal.
      *  @return The cost of the appeal.
      */
-    function appealCost(uint _disputeID, bytes memory _extraData) public view returns(uint cost) {
+    function appealCost(uint _disputeID, bytes memory _extraData) public view returns (uint cost) {
         if (appealDisputes[_disputeID].arbitrator != IArbitrator(address(0)))
-            cost = appealDisputes[_disputeID].arbitrator.appealCost(appealDisputes[_disputeID].appealDisputeID, _extraData);
+            cost = appealDisputes[_disputeID].arbitrator.appealCost(
+                appealDisputes[_disputeID].appealDisputeID,
+                _extraData
+            );
         else if (disputes[_disputeID].status == DisputeStatus.Appealable) cost = arbitrator.arbitrationCost(_extraData);
         else cost = NOT_PAYABLE_VALUE;
     }
@@ -153,7 +170,7 @@ contract AppealableArbitrator is CentralizedArbitrator, IArbitrable {
      *  @param _disputeID The ID of the dispute.
      *  @return The status.
      */
-    function disputeStatus(uint _disputeID) public view returns(DisputeStatus status) {
+    function disputeStatus(uint _disputeID) public view returns (DisputeStatus status) {
         if (appealDisputes[_disputeID].arbitrator != IArbitrator(address(0)))
             status = appealDisputes[_disputeID].arbitrator.disputeStatus(appealDisputes[_disputeID].appealDisputeID);
         else status = disputes[_disputeID].status;
@@ -163,8 +180,9 @@ contract AppealableArbitrator is CentralizedArbitrator, IArbitrable {
      *  @param _disputeID ID of the dispute to rule.
      *  @return ruling The ruling which would or has been given.
      */
-    function currentRuling(uint _disputeID) public view returns(uint ruling) {
-        if (appealDisputes[_disputeID].arbitrator != IArbitrator(address(0))) // Appealed.
+    function currentRuling(uint _disputeID) public view returns (uint ruling) {
+        if (appealDisputes[_disputeID].arbitrator != IArbitrator(address(0)))
+            // Appealed.
             ruling = appealDisputes[_disputeID].arbitrator.currentRuling(appealDisputes[_disputeID].appealDisputeID); // Retrieve ruling from the arbitrator whom the dispute is appealed to.
         else ruling = disputes[_disputeID].ruling; //  Not appealed, basic case.
     }
