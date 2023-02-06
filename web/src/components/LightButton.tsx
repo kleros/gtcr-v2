@@ -6,7 +6,7 @@ const StyledButton = styled(Button)`
   background-color: transparent;
   padding-left: 0;
   .button-text {
-    color: ${({ theme }) => theme.primaryText};
+    color: ${({ theme }) => theme.primaryBlue};
     font-weight: 400;
   }
   .button-svg {

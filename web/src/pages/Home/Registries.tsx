@@ -1,15 +1,18 @@
 import React from "react";
 import styled from "styled-components";
 import { Searchbar } from "@kleros/ui-components-library";
-import RegistryCard from "~src/components/RegistryCard";
+import RegistryCard from "components/RegistryCard";
+
+import EthIcon from "svgs/icons/ethereum.svg";
+import GnosisIcon from "svgs/icons/gnosis.svg";
 
 const Registries = () => (
   <Container>
     <Searchbar className="search" />
     <div className="list">
-      <RegistryCard network="Ethereum" />
-      <RegistryCard network="Gnosis" />
-      <RegistryCard network="Polygon" />
+      <RegistryCard network="Ethereum" Icon={EthIcon} />
+      <RegistryCard network="Gnosis" Icon={GnosisIcon} />
+      <RegistryCard network="Polygon" Icon={GnosisIcon} />
     </div>
   </Container>
 );

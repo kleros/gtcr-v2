@@ -1,21 +1,37 @@
 import React from "react";
 import styled from "styled-components";
 import { Card } from "@kleros/ui-components-library";
+import { Link } from "react-router-dom";
+import StatusBadge from "../StatusBadge";
+import Title from "../Title";
+import PnkIcon from "svgs/icons/pnk.svg";
 
 const ListsCard = () => {
   return (
     <StyledCard>
       <Row>
-        <Column className="large">Registries of contract domain names</Column>
+        <Column className="large">
+          <Title text="Registries of contract domain names" Icon={PnkIcon} />
+        </Column>
         <Column>12 items</Column>
-        <Column className="status">Registed</Column>
-        <Column className="cta">Open</Column>
+        <Column className="status">
+          <StatusBadge status="Registered" />
+        </Column>
+        <Column className="cta">
+          <Link to="/registry/1">Open</Link>
+        </Column>
       </Row>
       <Row>
-        <Column className="large">Address Tags</Column>
+        <Column className="large">
+          <Title text="Address Tags" Icon={PnkIcon} />
+        </Column>
         <Column>12 items</Column>
-        <Column className="status">Registed</Column>
-        <Column className="cta">Open</Column>
+        <Column className="status">
+          <StatusBadge status="Registered" />
+        </Column>
+        <Column className="cta">
+          <Link to="/registry/1">Open</Link>
+        </Column>
       </Row>
     </StyledCard>
   );

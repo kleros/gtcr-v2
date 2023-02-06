@@ -1,15 +1,25 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import Title from "../Title";
+import PnkIcon from "svgs/icons/pnk.svg";
+import EthIcon from "svgs/icons/ethereum.svg";
 
 interface IRegistryInfo {
   network: string;
   listNumber: number | string;
+  Icon?: React.FC<React.SVGAttributes<SVGElement>>;
 }
-const RegistryInfo: React.FC<IRegistryInfo> = ({ network, listNumber }) => {
+const RegistryInfo: React.FC<IRegistryInfo> = ({
+  network,
+  Icon,
+  listNumber,
+}) => {
   return (
     <Container>
-      <div className="wide">{network}</div>
+      <TitleContainer>
+        <Title text={network} Icon={Icon} />
+      </TitleContainer>
       <div>{listNumber} Lists</div>
       <Link className="link" to={"/"}>
         See all
@@ -36,4 +46,11 @@ const Container = styled.div`
   .link {
     color: ${({ theme }) => theme.primaryBlue};
   }
+`;
+
+const TitleContainer = styled.div`
+  width: 70%;
+  margin-bottom: 24px;
+  font-size: 16px;
+  color: ${({ theme }) => theme.primaryText};
 `;
