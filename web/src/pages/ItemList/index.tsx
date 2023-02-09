@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { DropdownSelect } from "@kleros/ui-components-library";
 import EthereumIcon from "svgs/icons/ethereum.svg";
+import PolicyIcon from "svgs/icons/policy.svg";
 
 import ListsDisplay from "~src/components/ListsDisplay";
 import Title from "~src/components/Title";
@@ -33,10 +34,13 @@ const ItemList: React.FC = () => {
   );
 
   const Footer = () => (
-    <CardFooter>
+    <ShadeArea>
       <div>Make Sure you read and understand the Policies</div>
-      <div>Curation Policy</div>
-    </CardFooter>
+      <StyledA>
+        <PolicyIcon />
+        Curation Policy
+      </StyledA>
+    </ShadeArea>
   );
   return (
     <Container>
@@ -65,7 +69,7 @@ const Content = styled.div`
   gap: 4rem;
 `;
 
-const CardFooter = styled.div`
+const ShadeArea = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -75,10 +79,22 @@ const CardFooter = styled.div`
   left: 0;
   bottom: 0;
   padding: 0 24px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   background-color: ${({ theme }) => theme.mediumBlue};
   color: ${({ theme }) => theme.primaryBlue};
+`;
+
+const StyledA = styled.a`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  > svg {
+    width: 16px;
+    height: 16px;
+    fill: ${({ theme }) => theme.primaryBlue};
+  }
 `;
 
 const StyledLabel = styled.label`
