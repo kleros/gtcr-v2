@@ -3,43 +3,24 @@ import styled from "styled-components";
 
 import { Card } from "@kleros/ui-components-library";
 import ListRow from "./ListRow";
-import PnkIcon from "svgs/icons/pnk.svg";
 
-const data = [
-  {
-    Icon: PnkIcon,
-    label: "Registries of contract domain names",
-    itemsCount: 12,
-    status: "Registered",
-    link: "domain-names.xyz",
-  },
-  {
-    Icon: PnkIcon,
-    label: "Address Tags",
-    itemsCount: 2,
-    status: "Challenged",
-  },
-  {
-    Icon: PnkIcon,
-    label: "DeversiFi Storytelling - Standard Impact sdfsdfasfadf",
-    itemsCount: 4,
-    status: "Submitted",
-    link: "domain-names.xyz",
-  },
-  {
-    Icon: PnkIcon,
-    label: "Insurance Data & Modelling",
-    itemsCount: 8,
-    status: "Submitted",
-  },
-];
+export interface IItemInfo {
+  label: string;
+  status: string;
+  itemsCount?: number | string;
+  url?: string;
+  Icon?: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
+}
+interface ListDisplayProps {
+  data: IItemInfo[];
+}
 
-const ListsDisplay: React.FC = () => {
+const ListsDisplay: React.FC<ListDisplayProps> = ({ data }) => {
   return (
     <StyledCard>
       {data &&
-        data.map(({ Icon, label, link, itemsCount, status }, index) => (
-          <ListRow key={index} {...{ Icon, label, link, itemsCount, status }} />
+        data.map(({ Icon, label, url, itemsCount, status }, index) => (
+          <ListRow key={index} {...{ Icon, label, url, itemsCount, status }} />
         ))}
     </StyledCard>
   );
