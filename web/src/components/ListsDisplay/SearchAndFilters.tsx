@@ -5,14 +5,14 @@ import styled from "styled-components";
 import Filters from "./Filters";
 import Search from "./Search";
 
-const SearchAndFilters: React.FC = () => (
+const SearchAndFilters: React.FC<{ listCount: number }> = ({ listCount }) => (
   <Container>
     <ContentArea>
       <Search />
       <Button text="Create New List" />
     </ContentArea>
     <ContentArea>
-      <label>14 Lists</label>
+      <label>{listCount} Lists</label>
       <Filters />
     </ContentArea>
   </Container>
