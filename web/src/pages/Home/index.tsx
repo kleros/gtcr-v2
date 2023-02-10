@@ -11,8 +11,10 @@ const getOneYearAgoTimestamp: () => number = () => {
 
 const Home: React.FC = () => (
   <HomePageProvider timeframe={getOneYearAgoTimestamp()}>
-    <Container>
+    <Banner>
       <BannerImage />
+    </Banner>
+    <Container>
       <Title>Community Curated Lists</Title>
       <Stats />
       <Registries />
@@ -22,11 +24,15 @@ const Home: React.FC = () => (
 
 export default Home;
 
+const Banner = styled.div`
+  width: 100%;
+  height: 20rem;
+`;
+
 const Container = styled.div`
   width: 80%;
   margin: 0 auto;
   height: auto;
-  background-color: ${({ theme }) => theme.lightBackground};
   padding: 32px;
 `;
 
