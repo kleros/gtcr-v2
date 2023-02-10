@@ -3,9 +3,11 @@ import StyledComponentsProvider from "context/StyledComponentsProvider";
 import { SWRConfig } from "swr";
 import { request } from "graphql-request";
 import { Routes, Route } from "react-router-dom";
+
 import Layout from "layout/index";
 import Home from "./pages/Home";
-import ItemList from "./pages/ItemList";
+import Registry from "./pages/Registry";
+import styled from "styled-components";
 
 const fetcherBuilder =
   (url: string) =>
@@ -24,19 +26,27 @@ const App: React.FC = () => {
           ),
         }}
       >
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="/registry/*" element={<ItemList />} />
-            <Route
-              path="*"
-              element={<h1>Justice not found here ¯\_( ͡° ͜ʖ ͡°)_/¯</h1>}
-            />
-          </Route>
-        </Routes>
+        <Container>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="registry/*" element={<Registry />} />
+              <Route
+                path="*"
+                element={<h1>Justice not found here ¯\_( ͡° ͜ʖ ͡°)_/¯</h1>}
+              />
+            </Route>
+          </Routes>
+        </Container>
       </SWRConfig>
     </StyledComponentsProvider>
   );
 };
 
 export default App;
+
+const Container = styled.div`
+  width: 100%;
+  height: auto;
+  background-color: ${({ theme }) => theme.lightBackground};
+`;
