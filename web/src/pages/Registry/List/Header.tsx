@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 
-import Title from "~src/components/Title";
+import Title from "components/Title";
 import EthereumIcon from "svgs/icons/ethereum.svg";
 
 const Header: React.FC = () => {
   return (
     <Container>
-      <Title text="Address Tags" Icon={EthereumIcon} />
+      <Title large text="Address Tags" Icon={EthereumIcon} />
       <StyledLabel>
         {" "}
         A list of public name tags, associated with Ethereum mainnet contract

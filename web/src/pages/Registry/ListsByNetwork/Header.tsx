@@ -2,14 +2,14 @@ import React from "react";
 import styled from "styled-components";
 
 import { DropdownSelect } from "@kleros/ui-components-library";
-import Title from "~src/components/Title";
+import Title from "components/Title";
 
 import EthereumIcon from "svgs/icons/ethereum.svg";
 
 const Header: React.FC = () => {
   return (
     <Container>
-      <Title text="Ethereum" Icon={EthereumIcon} />
+      <Title large text="Ethereum" Icon={EthereumIcon} />
       <StyledLabel>
         {" "}
         All Community Curated Lists on{" "}

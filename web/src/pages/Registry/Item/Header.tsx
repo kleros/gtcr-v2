@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import Title from "~src/components/Title";
+import Title from "components/Title";
 
 const Header: React.FC = () => {
   return (
     <Container>
-      <Title text="ENS: Public Resolver 2" />
+      <Title large text="ENS: Public Resolver 2" />
       <StyledLabel>
         {" "}
         ENS related information updating smart contract
