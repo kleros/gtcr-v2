@@ -10,7 +10,7 @@ const Content: React.FC = () => {
         <Avatar />
         <div className="account-info">
           <small>0x11ac...67e2</small>
-          <label>List Creator</label>
+          <label>Submitter</label>
         </div>
       </AccountDisplay>
       <Button text="Remove Item" variant="secondary" />
