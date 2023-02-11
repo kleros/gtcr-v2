@@ -1,17 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import { Tabs as TabsComponent } from "@kleros/ui-components-library";
-
-import PaperScriptIcon from "svgs/icons/paper-script.svg";
-import HistoryIcon from "svgs/icons/history.svg";
-
 import ListsDisplay, { IItemInfo } from "components/ListsDisplay";
 import SearchAndFilters from "components/ListsDisplay/SearchAndFilters";
+import ListHistory from "components/ListHistory";
 import ItemCard from "components/ItemCard";
 import Header from "./Header";
 import Footer from "./Footer";
 import Content from "./Content";
+import Tabs from "./Tabs";
 
 const data: IItemInfo[] = [
   {
@@ -42,12 +39,13 @@ const data: IItemInfo[] = [
 ];
 
 const List: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<number>(0);
   return (
     <Container>
       <StyledItemCard {...{ Header, Content, Footer }} />
-      <Tabs />
+      <Tabs callback={setActiveTab} />
       <SearchAndFilters listCount={data.length} />
-      <ListsDisplay data={data} />
+      {activeTab === 0 ? <ListsDisplay data={data} /> : <ListHistory />}
     </Container>
   );
 };
@@ -66,30 +64,4 @@ const StyledItemCard = styled(ItemCard)`
   flex-direction: column;
   gap: 4rem;
   margin-top: 4rem;
-`;
-
-const TABS = [
-  { text: "List", value: 0, Icon: PaperScriptIcon, path: "list" },
-  { text: "History", value: 1, Icon: HistoryIcon, path: "history" },
-];
-const Tabs: React.FC = () => {
-  const [currentTab, setCurrentTab] = useState(0);
-
-  return (
-    <StyledTabs
-      currentValue={currentTab}
-      items={TABS}
-      callback={(n: number) => {
-        setCurrentTab(n);
-      }}
-    />
-  );
-};
-
-const StyledTabs = styled(TabsComponent)`
-  width: 100%;
-  > * {
-    display: flex;
-    flex-wrap: wrap;
-  }
 `;
