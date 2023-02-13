@@ -199,3 +199,6 @@ tags
 # .pnp.*
 
 # End of https://www.toptal.com/developers/gitignore/api/vim,node,visualstudiocode,yarn
+
+# Local Netlify folder
+.netlify

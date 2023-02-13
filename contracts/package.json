@@ -1,8 +1,8 @@
 {
-  "name": "@kleros/tcr",
+  "name": "@kleros/curate-v2-contracts",
   "version": "2.0.0",
   "description": "Arbitrable Permission Lists on Ethereum",
-  "repository": "https://github.com/kleros/tcr",
+  "repository": "https://github.com/kleros/curate",
   "author": "Kleros",
   "license": "MIT",
   "scripts": {
