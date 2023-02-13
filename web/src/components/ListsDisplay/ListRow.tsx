@@ -6,6 +6,7 @@ import LightButton from "components/LightButton";
 import StatusBadge from "components/StatusBadge";
 import Title from "components/Title";
 import { IItemInfo } from "components/ListsDisplay";
+import { useBreadcrumbContext } from "hooks/useBreadcrumbContext";
 
 const ListRow: React.FC<IItemInfo> = ({
   Icon,
@@ -16,6 +17,12 @@ const ListRow: React.FC<IItemInfo> = ({
 }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const { addItem } = useBreadcrumbContext();
+
+  const handleClick = () => {
+    addItem(label);
+    navigate(`${pathname}/2`);
+  };
   return (
     <StyledRow>
       <LeftSide>
@@ -24,7 +31,7 @@ const ListRow: React.FC<IItemInfo> = ({
       <RightSide>
         {itemsCount && <label>{itemsCount} Items</label>}
         <StatusBadge status={status} />
-        <LightButton text="Open" onClick={() => navigate(`${pathname}/2`)} />
+        <LightButton text="Open" onClick={handleClick} />
       </RightSide>
     </StyledRow>
   );

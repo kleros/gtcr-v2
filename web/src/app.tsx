@@ -1,5 +1,5 @@
 import React from "react";
-import StyledComponentsProvider from "context/StyledComponentsProvider";
+import styled from "styled-components";
 import { SWRConfig } from "swr";
 import { request } from "graphql-request";
 import { Routes, Route } from "react-router-dom";
@@ -7,7 +7,9 @@ import { Routes, Route } from "react-router-dom";
 import Layout from "layout/index";
 import Home from "./pages/Home";
 import Registry from "./pages/Registry";
-import styled from "styled-components";
+
+import { BreadcrumbProvider } from "./hooks/useBreadcrumbContext";
+import StyledComponentsProvider from "context/StyledComponentsProvider";
 
 const fetcherBuilder =
   (url: string) =>
@@ -30,7 +32,15 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
-              <Route path="registry/*" element={<Registry />} />
+              <Route
+                path="registry/*"
+                element={
+                  <BreadcrumbProvider>
+                    <Registry />
+                  </BreadcrumbProvider>
+                }
+              />
+
               <Route
                 path="*"
                 element={<h1>Justice not found here ¯\_( ͡° ͜ʖ ͡°)_/¯</h1>}
