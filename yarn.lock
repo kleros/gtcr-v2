@@ -2719,7 +2719,7 @@ __metadata:
     solidity-bytes-utils: ^0.0.8
     solidity-rlp: ^2.0.1
     standard-version: ^8.0.1
-    truffle: ^5.0.25
+    truffle: ^5.7.7
     web3: ~1.5.0
     web3-utils: ~1.5.0
   languageName: unknown
@@ -4707,6 +4707,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@truffle/abi-utils@npm:^0.3.8":
+  version: 0.3.8
+  resolution: "@truffle/abi-utils@npm:0.3.8"
+  dependencies:
+    change-case: 3.0.2
+    fast-check: 3.1.1
+    web3-utils: 1.8.2
+  checksum: 9bd4e62cb3e4e26e18ba018e304784cca3950dc0c5142400a2b37948d56a90546765e14486a4ed2b9c99430dbf8179e75852c2f22c3540051cc0b95ac342aafa
+  languageName: node
+  linkType: hard
+
 "@truffle/blockchain-utils@npm:^0.1.3, @truffle/blockchain-utils@npm:^0.1.6":
   version: 0.1.6
   resolution: "@truffle/blockchain-utils@npm:0.1.6"
@@ -4714,12 +4725,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@truffle/code-utils@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "@truffle/code-utils@npm:3.0.1"
+"@truffle/code-utils@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "@truffle/code-utils@npm:3.0.2"
   dependencies:
     cbor: ^5.2.0
-  checksum: 4a90b36d64234a804592e5ffe6ff0bcd67c8c48bced1a2d45f763d95b12b22e7ca1e64ad4529ffaaa5eb8ae26b4f919ebdc42e653693586c9367954e8e3371c5
+  checksum: 74e168fd87461e6a468caa45ad61fe70c402a7bb5a9ee98e9c12c0264b973da84475a1f823c53e1108e1935fde87fbfda41b9d771d6e2166718405a53f3eed3c
   languageName: node
   linkType: hard
 
@@ -4741,6 +4752,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@truffle/codec@npm:^0.14.15":
+  version: 0.14.15
+  resolution: "@truffle/codec@npm:0.14.15"
+  dependencies:
+    "@truffle/abi-utils": ^0.3.8
+    "@truffle/compile-common": ^0.9.3
+    big.js: ^6.0.3
+    bn.js: ^5.1.3
+    cbor: ^5.2.0
+    debug: ^4.3.1
+    lodash: ^4.17.21
+    semver: 7.3.7
+    utf8: ^3.0.0
+    web3-utils: 1.8.2
+  checksum: 41ba30f261a1afa1e64b7294649d7a81715b1f3b8b9bc9175843d12713b112a8fcee29c6a084b4a3d1c3031886feceddbceee118c5428e20668405c76093ebaa
+  languageName: node
+  linkType: hard
+
 "@truffle/compile-common@npm:^0.9.2":
   version: 0.9.2
   resolution: "@truffle/compile-common@npm:0.9.2"
@@ -4751,19 +4780,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@truffle/config@npm:^1.3.51":
-  version: 1.3.51
-  resolution: "@truffle/config@npm:1.3.51"
+"@truffle/compile-common@npm:^0.9.3":
+  version: 0.9.3
+  resolution: "@truffle/compile-common@npm:0.9.3"
+  dependencies:
+    "@truffle/error": ^0.2.0
+    colors: 1.4.0
+  checksum: 51dd119f55812fb1c114b99d2f934ea9475eafbc0a9863b065388278976ddf1399f443e254b982cbe9a864baf7af1d5ff08d7102c3412e4f98f8521fa5c726e0
+  languageName: node
+  linkType: hard
+
+"@truffle/config@npm:^1.3.52":
+  version: 1.3.52
+  resolution: "@truffle/config@npm:1.3.52"
   dependencies:
     "@truffle/error": ^0.2.0
     "@truffle/events": ^0.1.22
-    "@truffle/provider": ^0.3.4
+    "@truffle/provider": ^0.3.5
     conf: ^10.1.2
     debug: ^4.3.1
     find-up: ^2.1.0
     lodash: ^4.17.21
     original-require: ^1.0.1
-  checksum: 07ef9c1d4b59cec00abd4d452a6b579cd15f4b927e2cc5faa40b4719451d22367e5c25bfd2b8a7143d56aacb05e3a85f49a8d0066f97b9960d85bfc39d1e7322
+  checksum: 1132dd066b58764d774fc2967a0c55161441f38227c469f7bdb30ec6905eb54a5560646ccc156564275be3a952b9d72e76613249c7ecf343954f42bc7db18065
   languageName: node
   linkType: hard
 
@@ -4823,27 +4862,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@truffle/db-loader@npm:^0.2.14":
-  version: 0.2.14
-  resolution: "@truffle/db-loader@npm:0.2.14"
+"@truffle/db-loader@npm:^0.2.16":
+  version: 0.2.16
+  resolution: "@truffle/db-loader@npm:0.2.16"
   dependencies:
-    "@truffle/db": ^2.0.14
+    "@truffle/db": ^2.0.16
   dependenciesMeta:
     "@truffle/db":
       optional: true
-  checksum: a188ae483ab368a951f85dae5a0f91a34e784f137494c17395fb77a9c93cd702e22350f225ca92537c9c346eb0621563864134be2584a679f8e48801aa353a5d
+  checksum: 613098ad7ff01416873e83d36830a795bbb4cb09ebceb5b28d4dc2267b6b2c5b1821405af87a4940fab626a8be20cff380ff81254fcab561430a06af306bade3
   languageName: node
   linkType: hard
 
-"@truffle/db@npm:^2.0.14":
-  version: 2.0.14
-  resolution: "@truffle/db@npm:2.0.14"
+"@truffle/db@npm:^2.0.16":
+  version: 2.0.16
+  resolution: "@truffle/db@npm:2.0.16"
   dependencies:
     "@graphql-tools/delegate": ^8.4.3
     "@graphql-tools/schema": ^8.3.1
-    "@truffle/abi-utils": ^0.3.7
-    "@truffle/code-utils": ^3.0.1
-    "@truffle/config": ^1.3.51
+    "@truffle/abi-utils": ^0.3.8
+    "@truffle/code-utils": ^3.0.2
+    "@truffle/config": ^1.3.52
     abstract-leveldown: ^7.2.0
     apollo-server: ^3.11.0
     debug: ^4.3.1
@@ -4858,7 +4897,7 @@ __metadata:
     pouchdb-debug: ^7.1.1
     pouchdb-find: ^7.0.0
     web3-utils: 1.8.2
-  checksum: e1daf9ab029f9f63d6f9e7701815bbfbfd140deb783d5ac0f823d04b7441fc96395bce9f32643a1e31047be66b703903590226f5d2a7ce3c711c9210b64034ad
+  checksum: ea3b8b51d53123cebe8b6b7057d27d85e1342ef436c985b8389c32d3c7a7e918f60a9a7f4c075181df9b1a790bbdab782fcb23ea83f1452a1d0d077cb802bad8
   languageName: node
   linkType: hard
 
@@ -4876,13 +4915,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@truffle/debugger@npm:^11.0.25":
-  version: 11.0.25
-  resolution: "@truffle/debugger@npm:11.0.25"
+"@truffle/debugger@npm:^11.0.27":
+  version: 11.0.27
+  resolution: "@truffle/debugger@npm:11.0.27"
   dependencies:
-    "@truffle/abi-utils": ^0.3.7
-    "@truffle/codec": ^0.14.14
-    "@truffle/source-map-utils": ^1.3.106
+    "@truffle/abi-utils": ^0.3.8
+    "@truffle/codec": ^0.14.15
+    "@truffle/source-map-utils": ^1.3.107
     bn.js: ^5.1.3
     debug: ^4.3.1
     json-pointer: ^0.6.1
@@ -4894,7 +4933,7 @@ __metadata:
     semver: 7.3.7
     web3: 1.8.2
     web3-eth-abi: 1.8.2
-  checksum: 2858157b7994e78eeb44f51dae0ab5c85fe01bbee558d8523a0d32027c0d6cf118ff140c35296bae7c9111692404c894c81fc7a5c6811d0d9ef9636c6b2ef009
+  checksum: 0b60920515bee93359eabb6c256a7fb951320b78f1fcdf54be5af575a6effd37829a97d67f3d31b345e621a60a031ec33b277c27c03ced6ea8bac7b606516a88
   languageName: node
   linkType: hard
 
@@ -4936,6 +4975,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@truffle/interface-adapter@npm:^0.5.29":
+  version: 0.5.29
+  resolution: "@truffle/interface-adapter@npm:0.5.29"
+  dependencies:
+    bn.js: ^5.1.3
+    ethers: ^4.0.32
+    web3: 1.8.2
+  checksum: a7fe84c7f5face2ac7a25e19703c79771a9ed998f317b225d31753b770be1b03f76da632ef6943c8c6969a6c4b5d20300a0dee62ddb5bcbf07bc676664e28547
+  languageName: node
+  linkType: hard
+
 "@truffle/promise-tracker@npm:^0.1.5":
   version: 0.1.5
   resolution: "@truffle/promise-tracker@npm:0.1.5"
@@ -4943,29 +4993,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@truffle/provider@npm:^0.3.4":
-  version: 0.3.4
-  resolution: "@truffle/provider@npm:0.3.4"
+"@truffle/provider@npm:^0.3.5":
+  version: 0.3.5
+  resolution: "@truffle/provider@npm:0.3.5"
   dependencies:
     "@truffle/error": ^0.2.0
-    "@truffle/interface-adapter": ^0.5.28
+    "@truffle/interface-adapter": ^0.5.29
     debug: ^4.3.1
     web3: 1.8.2
-  checksum: f94a41a2bbce7bb1d507b50a2cccd4841a468896768e9d0a42a1baf150800a24d143d27c59cc59449bbbd84a532d73c4fbe9e600e9e2b8ccc12db8fb0993824a
+  checksum: 09d2e23c7e061eb3b30e25146230add4b13defcfbf6710bd9ac980f5e23d0967c9e0c37d2ece577978e476c4ad6fc040e520d8100678ee75107e58d7173945d6
   languageName: node
   linkType: hard
 
-"@truffle/source-map-utils@npm:^1.3.106":
-  version: 1.3.106
-  resolution: "@truffle/source-map-utils@npm:1.3.106"
+"@truffle/source-map-utils@npm:^1.3.107":
+  version: 1.3.107
+  resolution: "@truffle/source-map-utils@npm:1.3.107"
   dependencies:
-    "@truffle/code-utils": ^3.0.1
-    "@truffle/codec": ^0.14.14
+    "@truffle/code-utils": ^3.0.2
+    "@truffle/codec": ^0.14.15
     debug: ^4.3.1
     json-pointer: ^0.6.1
     node-interval-tree: ^1.3.3
     web3-utils: 1.8.2
-  checksum: 30bd285cd656c1bb4cb291fb4d10a335e6a2f4eafee45d791e6eb4e61f1cf0dfed270e088bf82ea28a25ebeb8b2f153c5dc17ad08ed6b9682f76050a774aa24a
+  checksum: a6f253b21df7a15b13dfb70f0d3cb2158232d4ccee3d0c344f7f756f90b1891f7aec022a5a887d9c7c9069118ee6ea743eda092caec21b867989bebede19a58d
   languageName: node
   linkType: hard
 
@@ -13826,9 +13876,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ganache@npm:7.7.3":
-  version: 7.7.3
-  resolution: "ganache@npm:7.7.3"
+"ganache@npm:7.7.5":
+  version: 7.7.5
+  resolution: "ganache@npm:7.7.5"
   dependencies:
     "@trufflesuite/bigint-buffer": 1.1.10
     "@types/bn.js": ^5.1.0
@@ -13851,7 +13901,7 @@ __metadata:
   bin:
     ganache: dist/node/cli.js
     ganache-cli: dist/node/cli.js
-  checksum: 636500349596b5e532e5a27d6a0a1ec4f6822e4512e1f797138efc7599780aad437eb6d7f3474747ed3c34b11ac0b03babadde7ed26e635085953e7f88311918
+  checksum: 51350f9da71f2fe08e534425c72cd663c86d2fad720496379fce2f10c9acad64989928ace6a69ca193a360179662774132da036a0d8a1c7ce3305a137468c558
   languageName: node
   linkType: hard
 
@@ -25191,15 +25241,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"truffle@npm:^5.0.25":
-  version: 5.7.5
-  resolution: "truffle@npm:5.7.5"
+"truffle@npm:^5.7.7":
+  version: 5.7.7
+  resolution: "truffle@npm:5.7.7"
   dependencies:
-    "@truffle/db": ^2.0.14
-    "@truffle/db-loader": ^0.2.14
-    "@truffle/debugger": ^11.0.25
+    "@truffle/db": ^2.0.16
+    "@truffle/db-loader": ^0.2.16
+    "@truffle/debugger": ^11.0.27
     app-module-path: ^2.2.0
-    ganache: 7.7.3
+    ganache: 7.7.5
     mocha: 10.1.0
     original-require: ^1.0.1
   dependenciesMeta:
@@ -25207,7 +25257,7 @@ __metadata:
       optional: true
   bin:
     truffle: build/cli.bundled.js
-  checksum: e73a2d80e39f37542d929006c5342d9995dea06bd5213e869bf045637d53ebd324d1b0db53e03dd385896ed414d4b1d5c59dea090b01ea506e43caf5bb77c46f
+  checksum: 13d026dfcf15a3faeaca9cc6df8bf6a9b6d62d0de7d6b67849ef6fa1bfb4f27142f747fb3463a1c0072c7fb4ab35be85d044a5cf6daee6f45155de72f3a92754
   languageName: node
   linkType: hard
 
