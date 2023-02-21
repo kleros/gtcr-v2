@@ -22,12 +22,14 @@ type ChainConfig = {
   [chainId in SupportedChainId]?: AddEthereumChainParameter;
 };
 
+const INFURA_KEY = process.env.INFURA_API_KEY;
+
 export const MAINNET_CHAINS: ChainConfig = {
   [SupportedChainId.MAINNET]: {
     chainId: 1,
     chainName: "Ethereum",
     nativeCurrency: ETH,
-    rpcUrls: ["https://mainnet.infura.io/v3/758eb321e69542e88f70381ffec277cf"],
+    rpcUrls: [`https://mainnet.infura.io/v3/${INFURA_KEY}}`],
     blockExplorerUrls: ["https://etherscan.io"],
   },
   [SupportedChainId.GNOSIS]: {
@@ -44,7 +46,7 @@ export const TESTNET_CHAINS: ChainConfig = {
     chainId: 5,
     chainName: "Goerli",
     nativeCurrency: ETH,
-    rpcUrls: ["https://goerli.infura.io/v3/758eb321e69542e88f70381ffec277cf"],
+    rpcUrls: [`https://goerli.infura.io/v3/${INFURA_KEY}`],
     blockExplorerUrls: ["https://goerli.etherscan.io/"],
   },
 };
