@@ -1,31 +1,46 @@
 import React from "react";
 import styled from "styled-components";
 
-enum StatusColors {
-  Submitted = "primaryBlue",
-  Challenged = "warning",
-  Pending = "stroke",
-  Appealed = "error",
-  Registered = "success",
-  Removed = "secondaryText",
-}
-interface IStatusBadgeProps {
-  status: keyof typeof StatusColors | string;
+export interface Status {
+  color: string;
+  label: string;
 }
 
-const StatusBadge: React.FC<IStatusBadgeProps> = ({ status }) => {
-  let color: string = StatusColors.Submitted;
+interface StatusColors {
+  [key: string]: Status;
+}
 
-  if (
-    typeof status === "string" &&
-    StatusColors[status as keyof typeof StatusColors]
-  ) {
-    color = StatusColors[status as keyof typeof StatusColors];
+const DEFAULT_STATUS_COLORS: StatusColors = {
+  Submitted: { color: "primaryBlue", label: "Submitted" },
+  Challenged: { color: "warning", label: "Challenged" },
+  Pending: { color: "stroke", label: "Pending" },
+  Appealed: { color: "error", label: "Appealed" },
+  Registered: { color: "success", label: "Registered" },
+  Removed: { color: "secondaryText", label: "Removed" },
+};
+
+interface StatusBadgeProps {
+  status: keyof StatusColors | string;
+  statusColors?: StatusColors;
+}
+
+const StatusBadge: React.FC<StatusBadgeProps> = ({
+  status,
+  statusColors = DEFAULT_STATUS_COLORS,
+}) => {
+  const color: string =
+    statusColors[status]?.color || statusColors.Submitted.color;
+  let label: string =
+    statusColors[status]?.label || statusColors.Submitted.label;
+
+  if (typeof status === "string" && !statusColors[status]) {
+    label = status;
   }
+
   return (
     <Container color={color}>
       <Dot color={color} />
-      <p>{status}</p>
+      <p>{label}</p>
     </Container>
   );
 };
