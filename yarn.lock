@@ -1567,7 +1567,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/address@npm:5.7.0, @ethersproject/address@npm:>=5.0.0-beta.128, @ethersproject/address@npm:^5.0.4, @ethersproject/address@npm:^5.7.0":
+"@ethersproject/address@npm:5.7.0, @ethersproject/address@npm:>=5.0.0-beta.128, @ethersproject/address@npm:^5, @ethersproject/address@npm:^5.0.4, @ethersproject/address@npm:^5.7.0":
   version: 5.7.0
   resolution: "@ethersproject/address@npm:5.7.0"
   dependencies:
@@ -1749,7 +1749,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/providers@npm:5.7.2":
+"@ethersproject/providers@npm:5.7.2, @ethersproject/providers@npm:^5":
   version: 5.7.2
   resolution: "@ethersproject/providers@npm:5.7.2"
   dependencies:
@@ -2741,6 +2741,10 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.33.1
     "@typescript-eslint/parser": ^5.33.1
     "@typescript-eslint/utils": ^5.29.0
+    "@web3-react/core": 8.0.36-beta.0
+    "@web3-react/metamask": 8.0.31-beta.0
+    "@web3-react/network": 8.0.28-beta.0
+    "@web3-react/types": 8.0.21-beta.0
     chart.js: ^3.9.1
     chartjs-adapter-moment: ^1.0.0
     core-js: ^3.21.1
@@ -2920,6 +2924,13 @@ __metadata:
     mkdirp: ^0.5.1
     rimraf: ^2.5.2
   checksum: 1e4ed866e66b6fc7bc799145f48a955357102010a5a16b2edcb87548450c6be8fe56ce4f9efe2e655448dcd586960cdc04acbcf4849aa44b468c7b38345215e7
+  languageName: node
+  linkType: hard
+
+"@metamask/detect-provider@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "@metamask/detect-provider@npm:1.2.0"
+  checksum: 2c152534a8dd15bc1430bb5159cdf58993549a644cff344a1ff43f4ede8f041aad72b909e822747f6545de3ed293a740ecffc86a859daf7a925c4096efd61eb3
   languageName: node
   linkType: hard
 
@@ -5771,6 +5782,63 @@ __metadata:
   version: 3.2.45
   resolution: "@vue/shared@npm:3.2.45"
   checksum: ff3205056caed2a965aa0980e21319515ce13c859a9b269fdab0ee8b3c9f3d8eec7eefdb7fd6c6b47c12acdc7bf23c6c187b6191054221b4a29108139b20c221
+  languageName: node
+  linkType: hard
+
+"@web3-react/core@npm:8.0.36-beta.0":
+  version: 8.0.36-beta.0
+  resolution: "@web3-react/core@npm:8.0.36-beta.0"
+  dependencies:
+    "@ethersproject/providers": ^5
+    "@web3-react/store": ^8.0.26-beta.0
+    "@web3-react/types": ^8.0.21-beta.0
+    zustand: ^4.0.0
+  peerDependencies:
+    react: ">=16.8"
+  dependenciesMeta:
+    "@ethersproject/providers":
+      optional: true
+  checksum: 89ec73a58933076fec78d5c72a7bf8f36da48d4de97b30a69e294ef2014e7752772ba9ee11cf7244b72f7684ef30832c8bec0858dfab78a1caa634074911226b
+  languageName: node
+  linkType: hard
+
+"@web3-react/metamask@npm:8.0.31-beta.0":
+  version: 8.0.31-beta.0
+  resolution: "@web3-react/metamask@npm:8.0.31-beta.0"
+  dependencies:
+    "@metamask/detect-provider": ^1.2.0
+    "@web3-react/types": ^8.0.21-beta.0
+  checksum: 16ef20d0364ece8ed3e2a69e1ebd55ab2553e1dc83f3bb4b9614dbfecdda151cf3f6efd68c57ca24ba927b29dc9fc1b53b9f02c6f50f5b79b3aa3eb484670aae
+  languageName: node
+  linkType: hard
+
+"@web3-react/network@npm:8.0.28-beta.0":
+  version: 8.0.28-beta.0
+  resolution: "@web3-react/network@npm:8.0.28-beta.0"
+  dependencies:
+    "@ethersproject/providers": ^5
+    "@web3-react/types": ^8.0.21-beta.0
+  checksum: a473d4645facf9a2fb8da0d754a1b5fef77d6c3dda728db7f647e88a490510aff190b71b2bc19916cc92d0cb1f8b2edfd58bdde01cf3acf75acc0ce3a4c417d0
+  languageName: node
+  linkType: hard
+
+"@web3-react/store@npm:^8.0.26-beta.0":
+  version: 8.0.26-beta.0
+  resolution: "@web3-react/store@npm:8.0.26-beta.0"
+  dependencies:
+    "@ethersproject/address": ^5
+    "@web3-react/types": ^8.0.21-beta.0
+    zustand: ^4.0.0
+  checksum: df457c3a515b55519df6c3e81caf9f0582ed988f137e9812fd24fec16ae4aeadefaa22f29fcbe9e901fd59f3b29de8675ae8a01d4089812c317a6033884f2163
+  languageName: node
+  linkType: hard
+
+"@web3-react/types@npm:8.0.21-beta.0, @web3-react/types@npm:^8.0.21-beta.0":
+  version: 8.0.21-beta.0
+  resolution: "@web3-react/types@npm:8.0.21-beta.0"
+  dependencies:
+    zustand: ^4.0.0
+  checksum: 04ec4198205aaf4751d07bd904753e28a43409839b24d7ca6b514e68e5d35ac2e12ba388ff2175afb2d18cf0ce8ba72e2cf00d7b3ae5b2c7ce0e9cb967ac91a2
   languageName: node
   linkType: hard
 
@@ -25939,6 +26007,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"use-sync-external-store@npm:1.2.0":
+  version: 1.2.0
+  resolution: "use-sync-external-store@npm:1.2.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 5c639e0f8da3521d605f59ce5be9e094ca772bd44a4ce7322b055a6f58eeed8dda3c94cabd90c7a41fb6fa852210092008afe48f7038792fd47501f33299116a
+  languageName: node
+  linkType: hard
+
 "use@npm:^3.1.0":
   version: 3.1.1
   resolution: "use@npm:3.1.1"
@@ -27890,5 +27967,22 @@ __metadata:
   peerDependencies:
     ethers: ~5.7.0
   checksum: 613ebe822df1bef0af4d62386f3aaf65917d45dd80932b0ddf5b81eba6b0a46376f3e74263d153915dcfb8be954f730ded2e34d7806b6b199bbc74e0f124a0fb
+  languageName: node
+  linkType: hard
+
+"zustand@npm:^4.0.0":
+  version: 4.3.3
+  resolution: "zustand@npm:4.3.3"
+  dependencies:
+    use-sync-external-store: 1.2.0
+  peerDependencies:
+    immer: ">=9.0"
+    react: ">=16.8"
+  peerDependenciesMeta:
+    immer:
+      optional: true
+    react:
+      optional: true
+  checksum: fe0277ab0ce14849dea254cbdcfe83d4614364d38e616875f75ef2419f29085f5b03605efabeb33189a4557e647efaa294e0984c4f642e0566f445a7b207cdd6
   languageName: node
   linkType: hard
