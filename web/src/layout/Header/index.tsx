@@ -25,6 +25,7 @@ const Container = styled.div`
 
   .menu {
     display: flex;
+    align-items: center;
   }
 `;
 
