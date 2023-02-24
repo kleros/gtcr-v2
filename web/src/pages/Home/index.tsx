@@ -1,26 +1,31 @@
 import React from "react";
 import styled from "styled-components";
-import { HomePageProvider } from "hooks/useHomePageContext";
 import Stats from "./CourtOverview/Stats";
 import Registries from "./Registries";
+import { useAllTasks } from "../../hooks/queries/useAllTasks";
 
 const getOneYearAgoTimestamp: () => number = () => {
   const currentTime = new Date().getTime() / 1000;
   return currentTime - 31556926; // One year in seconds
 };
 
-const Home: React.FC = () => (
-  <HomePageProvider timeframe={getOneYearAgoTimestamp()}>
-    <Banner>
-      <BannerImage />
-    </Banner>
-    <Container>
-      <Title>Community Curated Lists</Title>
-      <Stats />
-      <Registries />
-    </Container>
-  </HomePageProvider>
-);
+const Home: React.FC = () => {
+  const { data } = useAllTasks(10, ["gnosis", "goerli"]);
+  console.log({ data });
+
+  return (
+    <>
+      <Banner>
+        <BannerImage />
+      </Banner>
+      <Container>
+        <Title>Community Curated Lists</Title>
+        <Stats />
+        <Registries />
+      </Container>
+    </>
+  );
+};
 
 export default Home;
 
