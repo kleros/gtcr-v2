@@ -1,0 +1,10 @@
+query GetCrossChainTasks($first: Int!, $chainNames: [String!]!) {
+  crossChainTasks(first: $first, chainNames: $chainNames) {
+    chainName
+    taskID
+    lang
+    disputed
+    requester
+    deadline
+  }
+}
