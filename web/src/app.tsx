@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { SWRConfig } from "swr";
-import { request } from "graphql-request";
+import { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import { Routes, Route } from "react-router-dom";
 
 import Layout from "layout/index";
@@ -10,22 +10,37 @@ import Registry from "./pages/Registry";
 
 import { BreadcrumbProvider } from "./hooks/useBreadcrumbContext";
 import StyledComponentsProvider from "context/StyledComponentsProvider";
+import {
+  execute,
+  QuerycrossChainTasksArgs,
+  GetCrossChainTasksQuery,
+} from "../.graphclient";
 
-const fetcherBuilder =
+/* const fetcherBuilder =
   (url: string) =>
   ({ query, variables }: { query: string; variables?: any }) => {
     console.log("fetch");
     return request(url, query, variables);
-  };
+  }; */
+
+const fetcherFunc = async ({
+  query,
+  variables,
+}: {
+  query: TypedDocumentNode<GetCrossChainTasksQuery, QuerycrossChainTasksArgs>;
+  variables: any;
+}) => {
+  console.log({ query });
+  console.log({ variables });
+  return await execute(query, variables);
+};
 
 const App: React.FC = () => {
   return (
     <StyledComponentsProvider>
       <SWRConfig
         value={{
-          fetcher: fetcherBuilder(
-            "https://api.thegraph.com/subgraphs/name/alcercu/kleros-core"
-          ),
+          fetcher: fetcherFunc,
         }}
       >
         <Container>
