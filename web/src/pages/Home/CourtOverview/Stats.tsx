@@ -8,11 +8,6 @@ import EthereumIcon from "svgs/icons/ethereum.svg";
 import PNKRedistributedIcon from "svgs/icons/redistributed-pnk.svg";
 import JurorIcon from "svgs/icons/user.svg";
 import BalanceIcon from "svgs/icons/law-balance.svg";
-import {
-  useHomePageContext,
-  HomePageQuery,
-  HomePageQueryDataPoints,
-} from "hooks/useHomePageContext";
 
 const StyledCard = styled(Card)`
   width: auto;
@@ -74,10 +69,9 @@ const stats: IStat[] = [
 ];
 
 const Stats = () => {
-  const { data } = useHomePageContext();
   return (
     <StyledCard>
-      {stats.map(({ title, getText, getSubtext, color, icon }, i) => {
+      {/*  {stats.map(({ title, getText, getSubtext, color, icon }, i) => {
         return (
           <StatDisplay
             key={i}
@@ -86,7 +80,7 @@ const Stats = () => {
             subtext={data ? getSubtext(data) : "Fetching..."}
           />
         );
-      })}
+      })} */}
     </StyledCard>
   );
 };
