@@ -1,0 +1,18 @@
+sources:
+  - name: Linguo
+    handler:
+      graphql:
+        endpoint: https://api.thegraph.com/subgraphs/name/kleros/linguo-{context.chainName:gnosis}
+additionalTypeDefs: |
+  extend type Task {
+    chainName: String
+  }
+  extend type Query {
+    crossChainTasks(first: Int!, chainNames: [String!]!): [Task!]!
+  }
+additionalResolvers:
+  - src/graphql/resolvers/index.ts
+documents:
+  - src/graphql/GetCrossChainTasks.gql
+codegen:
+  contextType: "MeshContext & { chainName: string }"
