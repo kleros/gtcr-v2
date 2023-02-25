@@ -1,7 +1,32 @@
 {
+  "mainnet": {
+    "LightGTCRFactory": {
+      "address": "0xb9dDC813AcAF3fD7aBC4C16735A09Bc1C0EE0054",
+      "startBlock": 13810085
+    },
+    "GTCRFactory": {
+      "address": "0xe9dd523600b74b8ef0af164687079a6c437f9cd5",
+      "startBlock": 10247117
+    }
+  },
+  "gnosis": {
+    "LightGTCRFactory": {
+      "address": "0x08e58Bc26CFB0d346bABD253A1799866F269805a",
+      "startBlock": 19592773
+    },
+    "GTCRFactory": {
+      "address": "0x794Cee5a6e1501b633eC13b8c1e327d9860FE039",
+      "startBlock": 16969180
+    }
+  },
   "goerli": {
     "LightGTCRFactory": {
-      "address": "0x55a3d9bd99f286f1817cafaab124ddddfcb0f314"
+      "address": "0x55a3d9bd99f286f1817cafaab124ddddfcb0f314",
+      "startBlock": 7487305
+    },
+    "GTCRFactory": {
+      "address": "0x9aad77bab5f18165f9ca81da9c3d392d9e382c23",
+      "startBlock": 7486799
     }
   }
 }
