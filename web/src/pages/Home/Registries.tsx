@@ -1,21 +1,38 @@
 import React from "react";
 import styled from "styled-components";
 import { Searchbar } from "@kleros/ui-components-library";
-import RegistryCard from "components/RegistryCard";
+import RegistryCard from "../../components/RegistryCard";
 
 import EthIcon from "svgs/icons/ethereum.svg";
 import GnosisIcon from "svgs/icons/gnosis.svg";
+import { useCrossChainLRegistries } from "../../hooks/queries/useCrossChainLRegistries";
+import { capitalize } from "../../utils/capitalize";
 
-const Registries = () => (
-  <Container>
-    <Searchbar className="search" />
-    <div className="list">
-      <RegistryCard network="Ethereum" Icon={EthIcon} />
-      <RegistryCard network="Gnosis" Icon={GnosisIcon} />
-      <RegistryCard network="Polygon" Icon={GnosisIcon} />
-    </div>
-  </Container>
-);
+const NETWORKS = ["gnosis", "goerli"];
+
+const Registries = () => {
+  const { data } = useCrossChainLRegistries(3, NETWORKS, {
+    orderBy: "numberOfRegistered",
+    orderDirection: "desc",
+    sortByChains: true,
+  });
+  return (
+    <Container>
+      <Searchbar className="search" />
+      <div className="list">
+        {data &&
+          Object.entries(data).map(([network, registries]) => (
+            <RegistryCard
+              key={network}
+              network={capitalize(network)}
+              registries={registries}
+              Icon={EthIcon}
+            />
+          ))}
+      </div>
+    </Container>
+  );
+};
 
 export default Registries;
 
