@@ -23,7 +23,7 @@ export const BreadcrumbProvider: React.FC<{ children: React.ReactNode }> = ({
   const navigate = useNavigate();
   const [items, setItems] = useState<IBreadcrumbItem[]>([
     { text: "home", value: 0 },
-    { text: "Ethereum", value: 1 },
+    { text: "All Lists", value: 1 },
   ]);
 
   const addItem = useCallback(
