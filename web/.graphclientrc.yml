@@ -1,18 +1,23 @@
 sources:
-  - name: Linguo
+  - name: GeneralizedTCR
     handler:
       graphql:
-        endpoint: https://api.thegraph.com/subgraphs/name/kleros/linguo-{context.chainName:gnosis}
+        endpoint: https://api.thegraph.com/subgraphs/name/gratestas/curate-test-{context.chainName:gnosis}
 additionalTypeDefs: |
-  extend type Task {
+  extend type LRequest {
+    chainName: String
+  }
+  extend type LRegistry {
     chainName: String
   }
   extend type Query {
-    crossChainTasks(first: Int!, chainNames: [String!]!): [Task!]!
+    crossChainLRequests(first: Int!, chainNames: [String!]!): [LRequest!]!
+    crossChainLRegistries(first: Int!, chainNames: [String!]!, orderBy: LRegistry_orderBy, orderDirection: OrderDirection): [LRegistry!]!
   }
 additionalResolvers:
   - src/graphql/resolvers/index.ts
 documents:
-  - src/graphql/GetCrossChainTasks.gql
+  - src/graphql/GetCrossChainLRequests.gql
+  - src/graphql/GetCrossChainLRegistries.gql
 codegen:
   contextType: "MeshContext & { chainName: string }"
