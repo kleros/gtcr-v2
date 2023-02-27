@@ -1,16 +1,21 @@
 import { Resolvers } from "../../../.graphclient";
 
 export const resolvers: Resolvers = {
-  Task: {
+  LRequest: {
+    // chainName can exist already in root as we pass it in the other resolver
+    chainName: (root, args, context, info) =>
+      root.chainName || context.chainName || "gnosis",
+  },
+  LRegistry: {
     // chainName can exist already in root as we pass it in the other resolver
     chainName: (root, args, context, info) =>
       root.chainName || context.chainName || "gnosis",
   },
   Query: {
-    crossChainTasks: async (root, args, context, info) =>
+    crossChainLRequests: async (root, args, context, info) =>
       Promise.all(
-        args.chainNames.map((chainName) =>
-          context.Linguo.Query.tasks({
+        args.chainNames.map((chainName: string) =>
+          context.GeneralizedTCR.Query.lrequests({
             root,
             args,
             context: {
@@ -18,14 +23,34 @@ export const resolvers: Resolvers = {
               chainName,
             },
             info,
-          }).then((tasks) =>
+          }).then((requests) =>
             // We send chainName here so we can take it in the resolver above
-            tasks.map((task) => ({
-              ...task,
+            requests.map((request) => ({
+              ...request,
               chainName,
             }))
           )
         )
-      ).then((allTasks) => allTasks.flat()),
+      ).then((allLRequests) => allLRequests.flat()),
+    crossChainLRegistries: async (root, args, context, info) =>
+      Promise.all(
+        args.chainNames.map((chainName: string) =>
+          context.GeneralizedTCR.Query.lregistries({
+            root,
+            args,
+            context: {
+              ...context,
+              chainName,
+            },
+            info,
+          }).then((registries) =>
+            // We send chainName here so we can take it in the resolver above
+            registries.map((registry) => ({
+              ...registry,
+              chainName,
+            }))
+          )
+        )
+      ).then((allLRegistries) => allLRegistries.flat()),
   },
 };
