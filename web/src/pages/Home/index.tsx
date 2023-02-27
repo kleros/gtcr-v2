@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import Stats from "./CourtOverview/Stats";
 import Registries from "./Registries";
-import { useAllTasks } from "../../hooks/queries/useAllTasks";
 
 const getOneYearAgoTimestamp: () => number = () => {
   const currentTime = new Date().getTime() / 1000;
@@ -10,9 +9,6 @@ const getOneYearAgoTimestamp: () => number = () => {
 };
 
 const Home: React.FC = () => {
-  const { data } = useAllTasks(10, ["gnosis", "goerli"]);
-  console.log({ data });
-
   return (
     <>
       <Banner>
