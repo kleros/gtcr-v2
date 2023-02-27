@@ -37,6 +37,9 @@
       ],
       "svgs*": [
         "./src/assets/svgs*"
+      ],
+      "utils*": [
+        "./src/utils*"
       ]
     },
     "experimentalDecorators": true,
