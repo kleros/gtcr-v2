@@ -10,24 +10,13 @@ import Registry from "./pages/Registry";
 
 import { BreadcrumbProvider } from "./hooks/useBreadcrumbContext";
 import StyledComponentsProvider from "context/StyledComponentsProvider";
-import {
-  execute,
-  QuerycrossChainTasksArgs,
-  GetCrossChainTasksQuery,
-} from "../.graphclient";
+import { execute } from "../.graphclient";
 
-/* const fetcherBuilder =
-  (url: string) =>
-  ({ query, variables }: { query: string; variables?: any }) => {
-    console.log("fetch");
-    return request(url, query, variables);
-  }; */
-
-const fetcherFunc = async ({
+const fetcherBuilder = async ({
   query,
   variables,
 }: {
-  query: TypedDocumentNode<GetCrossChainTasksQuery, QuerycrossChainTasksArgs>;
+  query: TypedDocumentNode<any, any>;
   variables: any;
 }) => {
   console.log({ query });
@@ -40,7 +29,7 @@ const App: React.FC = () => {
     <StyledComponentsProvider>
       <SWRConfig
         value={{
-          fetcher: fetcherFunc,
+          fetcher: fetcherBuilder,
         }}
       >
         <Container>
