@@ -1,0 +1,15 @@
+query GetCrossChainLRequests($first: Int!, $chainNames: [String!]!) {
+  crossChainLRequests(first: $first, chainNames: $chainNames) {
+    chainName
+    id
+    resolved
+    item {
+      props {
+        type
+        label
+        description
+        value
+      }
+    }
+  }
+}
