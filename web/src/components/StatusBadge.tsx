@@ -6,7 +6,7 @@ enum StatusColors {
   Challenged = "warning",
   Pending = "stroke",
   Appealed = "error",
-  Registered = "success",
+  Included = "success",
   Removed = "secondaryText",
 }
 interface IStatusBadgeProps {
