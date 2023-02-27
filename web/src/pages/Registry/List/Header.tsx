@@ -10,7 +10,7 @@ const Header: React.FC = () => {
     <Container>
       <TitleArea>
         <Title large text="Address Tags" Icon={EthereumIcon} />
-        <StatusBadge status="Registered" />
+        <StatusBadge status="Included" />
       </TitleArea>
       <StyledLabel>
         {" "}
