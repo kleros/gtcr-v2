@@ -12,7 +12,7 @@ const Header: React.FC = () => {
     <Container>
       <TitleArea>
         <Title large text="ENS: Public Resolver 2" />
-        <StatusBadge status="Registered" />
+        <StatusBadge status="Included" />
       </TitleArea>
       <LinkArea>
         <div className="link">
