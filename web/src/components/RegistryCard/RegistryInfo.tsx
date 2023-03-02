@@ -2,8 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Title from "../Title";
-import PnkIcon from "svgs/icons/pnk.svg";
-import EthIcon from "svgs/icons/ethereum.svg";
 
 interface IRegistryInfo {
   network: string;

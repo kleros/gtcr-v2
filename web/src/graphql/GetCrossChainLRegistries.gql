@@ -1,0 +1,21 @@
+query GetCrossChainLRegistries(
+  $first: Int!
+  $chainNames: [String!]!
+  $orderBy: LRegistry_orderBy
+  $orderDirection: OrderDirection
+) {
+  crossChainLRegistries(
+    first: $first
+    chainNames: $chainNames
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+  ) {
+    chainName
+    id
+    numberOfRegistered
+    registrationMetaEvidence {
+      id
+      URI
+    }
+  }
+}

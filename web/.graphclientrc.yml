@@ -1,0 +1,23 @@
+sources:
+  - name: GeneralizedTCR
+    handler:
+      graphql:
+        endpoint: https://api.thegraph.com/subgraphs/name/gratestas/curate-test-{context.chainName:gnosis}
+additionalTypeDefs: |
+  extend type LRequest {
+    chainName: String
+  }
+  extend type LRegistry {
+    chainName: String
+  }
+  extend type Query {
+    crossChainLRequests(first: Int!, chainNames: [String!]!): [LRequest!]!
+    crossChainLRegistries(first: Int!, chainNames: [String!]!, orderBy: LRegistry_orderBy, orderDirection: OrderDirection): [LRegistry!]!
+  }
+additionalResolvers:
+  - src/graphql/resolvers/index.ts
+documents:
+  - src/graphql/GetCrossChainLRequests.gql
+  - src/graphql/GetCrossChainLRegistries.gql
+codegen:
+  contextType: "MeshContext & { chainName: string }"

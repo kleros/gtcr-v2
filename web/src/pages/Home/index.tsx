@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { HomePageProvider } from "hooks/useHomePageContext";
 import Stats from "./CourtOverview/Stats";
 import Registries from "./Registries";
 
@@ -9,18 +8,20 @@ const getOneYearAgoTimestamp: () => number = () => {
   return currentTime - 31556926; // One year in seconds
 };
 
-const Home: React.FC = () => (
-  <HomePageProvider timeframe={getOneYearAgoTimestamp()}>
-    <Banner>
-      <BannerImage />
-    </Banner>
-    <Container>
-      <Title>Community Curated Lists</Title>
-      <Stats />
-      <Registries />
-    </Container>
-  </HomePageProvider>
-);
+const Home: React.FC = () => {
+  return (
+    <>
+      <Banner>
+        <BannerImage />
+      </Banner>
+      <Container>
+        <Title>Community Curated Lists</Title>
+        <Stats />
+        <Registries />
+      </Container>
+    </>
+  );
+};
 
 export default Home;
 

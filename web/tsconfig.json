@@ -37,6 +37,9 @@
       ],
       "svgs*": [
         "./src/assets/svgs*"
+      ],
+      "utils*": [
+        "./src/utils*"
       ]
     },
     "experimentalDecorators": true,
@@ -76,5 +79,8 @@
     "src/setupTests.ts",
     "dist",
     "commitlint.config.js"
+  ],
+  "include": [
+    ".graphclient"
   ]
 }
