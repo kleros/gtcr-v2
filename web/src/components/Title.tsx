@@ -56,7 +56,7 @@ const Container = styled.div`
 `;
 
 const IconWrapper = styled.div`
-  width: 32px;
+  width: 18px;
   height: 100%;
   display: flex;
   justify-content: center;
