@@ -2743,7 +2743,7 @@ __metadata:
     "@typescript-eslint/utils": ^5.29.0
     chart.js: ^3.9.1
     chartjs-adapter-moment: ^1.0.0
-    core-js: ^3.21.1
+    core-js: ^3.30.0
     eslint: ^8.16.0
     eslint-config-prettier: ^8.3.0
     eslint-import-resolver-parcel: ^1.10.6
@@ -9773,10 +9773,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:^3.0.1, core-js@npm:^3.21.1":
+"core-js@npm:^3.0.1":
   version: 3.27.2
   resolution: "core-js@npm:3.27.2"
   checksum: 718debd426f55a6b97cf9b757c936be258afd6d4f7052f89d0f96c982d7013e9000b0b006df42831a0cf32adad298e34d6a19052dce9ae1c7ab87162c0c665e0
+  languageName: node
+  linkType: hard
+
+"core-js@npm:^3.30.0":
+  version: 3.30.0
+  resolution: "core-js@npm:3.30.0"
+  checksum: 276d4444a1261739ea4c350ef3f6aeab4c7ae7f36ac197f02d197a4566b42867c3a9b12c2fcda8a736aeca888d2c4131c8cb58ad17ed02294a10c9c97606df71
   languageName: node
   linkType: hard
 
