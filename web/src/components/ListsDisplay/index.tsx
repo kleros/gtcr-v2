@@ -3,10 +3,11 @@ import styled from "styled-components";
 
 import { Card } from "@kleros/ui-components-library";
 import ListRow from "./ListRow";
+import { ItemStatus } from "../StatusBadge";
 
 export interface IItemInfo {
   label: string;
-  status: string;
+  status: ItemStatus;
   itemsCount?: number | string;
   url?: string;
   Icon?: React.FunctionComponent<React.SVGAttributes<SVGElement>>;

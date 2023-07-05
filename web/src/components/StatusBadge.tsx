@@ -9,23 +9,16 @@ enum StatusColors {
   Registered = "success",
   Removed = "secondaryText",
 }
-interface IStatusBadgeProps {
-  status: keyof typeof StatusColors | string;
-}
 
-const StatusBadge: React.FC<IStatusBadgeProps> = ({ status }) => {
-  let color: string = StatusColors.Submitted;
+export type ItemStatus = keyof typeof StatusColors;
 
-  if (
-    typeof status === "string" &&
-    StatusColors[status as keyof typeof StatusColors]
-  ) {
-    color = StatusColors[status as keyof typeof StatusColors];
-  }
+const StatusBadge: React.FC<{ status: ItemStatus }> = (p) => {
+  const color = StatusColors[p.status as keyof typeof StatusColors];
+
   return (
     <Container color={color}>
       <Dot color={color} />
-      <p>{status}</p>
+      <p>{p.status}</p>
     </Container>
   );
 };
